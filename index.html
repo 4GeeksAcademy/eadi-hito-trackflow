@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="TrackFlow: gestión de almacenes, última milla y logística inversa para e-commerce en Estados Unidos y España." />
+		<title>TrackFlow | Logística para e-commerce</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: { ink: '#102445', flow: '#1267e8', mist: '#e8f1ff', mint: '#d7f8e7', coral: '#ff6b4a' },
+						fontFamily: { sans: ['Arial', 'sans-serif'] }
+					}
+				}
+			}
+		</script>
+		<script src="https://unpkg.com/lucide@latest"></script>
+		<script type="application/ld+json">
+			{"@context":"https://schema.org","@type":"Organization","name":"TrackFlow","description":"Gestión de almacenes y entregas de última milla para e-commerce","url":"https://trackflow.com","foundingDate":"2009","address":[{"@type":"PostalAddress","addressCountry":"US","addressLocality":"Los Ángeles","addressRegion":"California"},{"@type":"PostalAddress","addressCountry":"ES","addressLocality":"Zaragoza","addressRegion":"Aragón"}],"contactPoint":{"@type":"ContactPoint","telephone":"+1-213-555-0147","contactType":"sales","availableLanguage":["Spanish","English"]},"sameAs":["https://linkedin.com/company/trackflow"],"areaServed":[{"@type":"Country","name":"Estados Unidos"},{"@type":"Country","name":"Spain"}]}
+		</script>
+	</head>
+	<body class="bg-white text-ink antialiased">
+		<header class="border-b border-slate-100 bg-white/95 sticky top-0 z-20 backdrop-blur" aria-label="Cabecera principal">
+			<nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 lg:px-8" aria-label="Navegación principal">
+				<a href="#inicio" class="flex items-center" aria-label="TrackFlow, inicio"><img src="recursos/imagenes/LOGO1_trackflow.png" alt="Logo de TrackFlow, logística entre Estados Unidos y España" class="h-20 w-auto" /></a>
+				<div class="hidden items-center gap-7 text-sm font-semibold md:flex">
+					<a href="#inicio" class="hover:text-flow">Inicio</a><a href="#servicios" class="hover:text-flow">Servicios</a><a href="#cobertura" class="hover:text-flow">Cobertura</a><a href="#contacto" class="hover:text-flow">Contacto</a>
+				</div>
+				<a href="application.html" class="rounded-md bg-flow px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700">Solicitar información</a>
+			</nav>
+		</header>
+		<main>
+			<section id="inicio" class="overflow-hidden bg-ink" aria-labelledby="hero-title">
+				<div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:py-20 lg:grid-cols-[1.2fr_.8fr] lg:px-8 lg:py-24">
+					<div class="relative z-10 max-w-3xl">
+						<p class="mb-5 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-blue-300"><span class="h-2 w-2 rounded-full bg-coral"></span> EE. UU. &middot; España</p>
+						<h1 id="hero-title" class="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">Logística que escala con tu e-commerce</h1>
+						<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Gestión de almacenes, entregas de última milla y logística inversa en Estados Unidos y España. Más de 15 años ayudando a marcas de moda, electrónica y cosmética a crecer sin preocuparse por la operación.</p>
+						<div class="mt-9 flex flex-wrap gap-4"><a href="application.html" class="rounded-md bg-coral px-6 py-3.5 font-bold text-white transition hover:bg-orange-600">Solicitar información <span aria-hidden="true">→</span></a><a href="#servicios" class="rounded-md border border-slate-500 px-6 py-3.5 font-bold text-white transition hover:border-white">Conoce nuestros servicios</a></div>
+					</div>
+					<div class="relative min-h-64 rounded-lg border border-blue-400/25 bg-gradient-to-br from-blue-600 to-cyan-400 p-6 shadow-2xl">
+						<div class="absolute inset-5 rounded-md border border-white/25"></div>
+						<div class="relative flex h-full flex-col justify-between">
+							<i data-lucide="route" class="h-14 w-14 text-white" aria-hidden="true"></i>
+							<div><p class="text-4xl font-bold text-white">2 mercados.</p><p class="mt-1 text-lg font-semibold text-blue-950">Una operación conectada.</p></div>
+							<div class="flex items-center gap-3 text-sm font-bold text-blue-950"><i data-lucide="map-pin" class="h-4 w-4"></i> Los Ángeles <span class="h-px w-8 bg-blue-950/50"></span> Zaragoza</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="servicios" class="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8" aria-labelledby="services-title">
+				<p class="text-sm font-bold uppercase tracking-[0.16em] text-flow">Servicios</p><h2 id="services-title" class="mt-3 text-3xl font-bold sm:text-4xl">Tu operación, de punta a punta</h2>
+				<div class="mt-10 grid gap-5 md:grid-cols-3">
+					<article class="border-t-4 border-flow bg-mist p-7"><i data-lucide="warehouse" class="h-9 w-9 text-flow" aria-hidden="true"></i><h3 class="mt-6 text-xl font-bold">Gestión de Almacenes</h3><ul class="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>Almacenamiento, picking y packing</li><li>Inventario en tiempo real</li><li>Almacenes en Los Ángeles y Zaragoza</li></ul></article>
+					<article class="border-t-4 border-coral bg-orange-50 p-7"><i data-lucide="truck" class="h-9 w-9 text-coral" aria-hidden="true"></i><h3 class="mt-6 text-xl font-bold">Entregas de Última Milla</h3><ul class="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>Carriers certificados en ambos países</li><li>Seguimiento unificado de envíos</li><li>Gestión de incidencias y devoluciones</li></ul></article>
+					<article class="border-t-4 border-emerald-500 bg-emerald-50 p-7"><i data-lucide="rotate-ccw" class="h-9 w-9 text-emerald-600" aria-hidden="true"></i><h3 class="mt-6 text-xl font-bold">Logística Inversa</h3><ul class="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>Gestión completa de devoluciones</li><li>Inspección y reacondicionamiento</li><li>Integración con tu plataforma de ventas</li></ul></article>
+				</div>
+			</section>
+			<section id="cobertura" class="bg-slate-50 py-16 sm:py-20" aria-labelledby="coverage-title"><div class="mx-auto max-w-7xl px-5 lg:px-8"><div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="text-sm font-bold uppercase tracking-[0.16em] text-flow">Cobertura</p><h2 id="coverage-title" class="mt-3 text-3xl font-bold sm:text-4xl">Dos bases, una red logística</h2></div><p class="max-w-md text-slate-600">Coordinamos la operación local con visibilidad global para que tu marca llegue más lejos.</p></div><div class="mt-10 grid gap-5 md:grid-cols-2"><article class="rounded-lg bg-white p-7 shadow-sm ring-1 ring-slate-200"><div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Estados Unidos</h3><span class="rounded-full bg-mist px-3 py-1 text-xs font-bold text-flow">LOS ÁNGELES</span></div><ul class="mt-6 space-y-3 text-slate-600"><li class="flex gap-3"><i data-lucide="check" class="h-5 text-flow"></i>Almacén en Los Ángeles</li><li class="flex gap-3"><i data-lucide="check" class="h-5 text-flow"></i>Cobertura nacional</li><li class="flex gap-3"><i data-lucide="check" class="h-5 text-flow"></i>UPS, FedEx y DHL</li></ul></article><article class="rounded-lg bg-white p-7 shadow-sm ring-1 ring-slate-200"><div class="flex items-center justify-between"><h3 class="text-2xl font-bold">España</h3><span class="rounded-full bg-mint px-3 py-1 text-xs font-bold text-emerald-700">ZARAGOZA</span></div><ul class="mt-6 space-y-3 text-slate-600"><li class="flex gap-3"><i data-lucide="check" class="h-5 text-emerald-600"></i>Almacén en Zaragoza</li><li class="flex gap-3"><i data-lucide="check" class="h-5 text-emerald-600"></i>Cobertura peninsular e islas</li><li class="flex gap-3"><i data-lucide="check" class="h-5 text-emerald-600"></i>MRW, SEUR y DHL</li></ul></article></div></div></section>
+			<section class="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8" aria-labelledby="benefits-title"><div class="grid gap-10 lg:grid-cols-[.75fr_1.25fr]"><div><p class="text-sm font-bold uppercase tracking-[0.16em] text-flow">Por qué TrackFlow</p><h2 id="benefits-title" class="mt-3 text-3xl font-bold sm:text-4xl">La logística no debería frenar tu próximo paso.</h2><a href="application.html" class="mt-7 inline-flex items-center gap-2 font-bold text-flow hover:text-blue-800">Hablemos de tu operación <i data-lucide="arrow-right" class="h-5"></i></a></div><div class="grid gap-x-8 gap-y-8 sm:grid-cols-2"><article><p class="text-3xl font-bold text-flow">01</p><h3 class="mt-3 font-bold">Operación binacional</h3><p class="mt-2 text-sm leading-6 text-slate-600">Infraestructura propia en Estados Unidos y España.</p></article><article><p class="text-3xl font-bold text-coral">130+</p><h3 class="mt-3 font-bold">Profesionales</h3><p class="mt-2 text-sm leading-6 text-slate-600">Un equipo dedicado a mantener tu operación en movimiento.</p></article><article><p class="text-3xl font-bold text-emerald-600">24/7</p><h3 class="mt-3 font-bold">Tecnología propia</h3><p class="mt-2 text-sm leading-6 text-slate-600">Visibilidad total de tu inventario y tus envíos.</p></article><article><p class="text-3xl font-bold text-flow">15 años</p><h3 class="mt-3 font-bold">Especialización e-commerce</h3><p class="mt-2 text-sm leading-6 text-slate-600">Experiencia en moda, electrónica y cosmética.</p></article></div></div></section>
+			<section id="contacto" class="bg-flow py-14 text-white" aria-labelledby="contact-title"><div class="mx-auto flex max-w-7xl flex-col gap-8 px-5 lg:flex-row lg:items-center lg:justify-between lg:px-8"><div><p class="text-sm font-bold uppercase tracking-[0.16em] text-blue-200">Contacto</p><h2 id="contact-title" class="mt-2 text-3xl font-bold">Tu próxima entrega empieza aquí.</h2></div><div class="grid gap-4 text-sm sm:grid-cols-3 sm:gap-8"><a href="mailto:comercial@trackflow.com" class="font-semibold hover:underline">comercial@trackflow.com</a><a href="tel:+12135550147" class="hover:underline">Los Ángeles<br><strong>+1 213 555 0147</strong></a><a href="tel:+34976123456" class="hover:underline">Zaragoza<br><strong>+34 976 123 456</strong></a></div></div></section>
+		</main>
+		<footer class="bg-ink py-8 text-sm text-slate-300"><div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 sm:flex-row sm:items-center sm:justify-between lg:px-8"><p>© 2025 TrackFlow. Todos los derechos reservados.</p><a href="https://linkedin.com/company/trackflow" class="inline-flex items-center gap-2 hover:text-white" aria-label="TrackFlow en LinkedIn"><i data-lucide="linkedin" class="h-4 w-4"></i> LinkedIn</a></div></footer>
+		<script>lucide.createIcons();</script>
+	</body>
+</html>
