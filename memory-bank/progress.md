@@ -11,9 +11,12 @@
 - El dashboard recibió mejoras trazables de accesibilidad: skip link, navegación semántica, foco visible, caption/scope de tabla, iconos decorativos ocultos y estados con texto.
 - Se añadió viewport explícito y se redujeron estilos inline del backoffice siguiendo las recomendaciones aplicables de Vercel.
 - La skill interna `.skills/trackflow-dashboard-delivery/` documenta QA previo a entrega con typecheck, lint, build y smoke tests HTTP/Playwright.
+- En `feature/frontend-specs` se añadió la especificación frontend de facets, alertas y categorías en `frontend/specs/`, con tipos TypeScript estrictos, parámetros, componentes, contrato de datos y rastro de verificación.
+- La exploración confirmó que esta rama no contiene backend ni `/docs`; por eso el contrato queda marcado como provisional y sus desajustes están documentados para reconciliarse con OpenAPI.
 
 ## Próximos pasos
 1. Instalar las librerías gráficas del contenedor para completar smoke tests Playwright; los servidores ya arrancan correctamente.
 2. Sustituir datos mock del backoffice por servicios bajo `services/` cuando exista backend.
 3. Añadir persistencia y envío real del formulario de leads.
 4. Incorporar telemetría, tracking unificado y autenticación del backoffice.
+5. Verificar `frontend/specs/` contra el `/docs` real cuando se incorpore el backend de operaciones.
