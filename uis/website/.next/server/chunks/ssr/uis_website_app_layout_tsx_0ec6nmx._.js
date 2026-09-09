@@ -1,0 +1,3 @@
+module.exports=[34021,a=>{"use strict";var b=a.i(22615);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"es",children:(0,b.jsx)("body",{children:a})})},"metadata",0,{title:"TrackFlow | Logística que escala con tu e-commerce",description:"Almacenes, última milla y logística inversa en Estados Unidos y España."}])},51305,function(a){a.n(a.i(34021))}];
+
+//# sourceMappingURL=uis_website_app_layout_tsx_0ec6nmx._.js.map
