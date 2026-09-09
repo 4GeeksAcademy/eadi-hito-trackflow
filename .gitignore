@@ -3,3 +3,5 @@
 
 /recursos/
 node_modules/
+**/.next/
+**/.turbo/
