@@ -213,3 +213,4 @@ La decisión recomendada es comenzar con un monolito modular FastAPI en `service
 4. Verificar los tipos de `frontend/specs/` contra el OpenAPI generado y registrar incompatibilidades antes de conectar el frontend.
 5. Añadir observabilidad, pruebas de contrato e idempotencia antes de habilitar ingestas reales.
 
+
