@@ -13,6 +13,7 @@
 - La skill interna `.skills/trackflow-dashboard-delivery/` documenta QA previo a entrega con typecheck, lint, build y smoke tests HTTP/Playwright.
 - En `feature/frontend-specs` se añadió la especificación frontend de facets, alertas y categorías en `frontend/specs/`, con tipos TypeScript estrictos, parámetros, componentes, contrato de datos y rastro de verificación.
 - La exploración confirmó que esta rama no contiene backend ni `/docs`; por eso el contrato queda marcado como provisional y sus desajustes están documentados para reconciliarse con OpenAPI.
+- En `feature/propuesta-arquitectura-backend` se completó `docs/ARCHITECTURE_PROPOSAL.md` con una propuesta de monolito modular FastAPI en capas, estructura por dominio, routers, separación frontend/backend, CORS, configuración por entorno y riesgos específicos de TrackFlow.
 
 ## Próximos pasos
 1. Instalar las librerías gráficas del contenedor para completar smoke tests Playwright; los servidores ya arrancan correctamente.
@@ -20,3 +21,4 @@
 3. Añadir persistencia y envío real del formulario de leads.
 4. Incorporar telemetría, tracking unificado y autenticación del backoffice.
 5. Verificar `frontend/specs/` contra el `/docs` real cuando se incorpore el backend de operaciones.
+6. Convertir la propuesta de `docs/ARCHITECTURE_PROPOSAL.md` en un servicio FastAPI cuando se aprueben los contratos y límites de dominio.
