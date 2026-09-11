@@ -1,0 +1,5 @@
+fastapi<1,>=0.115
+tinydb<5,>=4.8
+uvicorn[standard]<1,>=0.30
+python-multipart<1,>=0.0.9
+pydantic[email]<3,>=2.0

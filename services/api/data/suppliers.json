@@ -1,0 +1,216 @@
+{
+  "_default": {
+    "1": {
+      "name": "UPS Ground",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 7.45,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "business@ups.com",
+      "notes": "Carrier principal para entregas locales en Los Ángeles y alrededores.",
+      "updated_at": "2026-09-11T23:03:15.700188+00:00"
+    },
+    "2": {
+      "name": "FedEx Ground",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 7.9,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "Continental USA",
+      "contact_email": "business.solutions@fedex.com",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.728070+00:00"
+    },
+    "3": {
+      "name": "DHL Express USA",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile",
+        "carrier_international"
+      ],
+      "rate_per_shipment": 14.2,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "Continental USA + International",
+      "contact_email": "business.us@dhl.com",
+      "notes": "Usado para envíos urgentes y exportaciones a Europa.",
+      "updated_at": "2026-09-11T23:03:15.729876+00:00"
+    },
+    "4": {
+      "name": "OnTrac",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 6.1,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "solutions@ontrac.com",
+      "notes": "Carrier regional. Mejor tarifa en la zona de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.732493+00:00"
+    },
+    "5": {
+      "name": "Laser Ship",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 5.8,
+      "currency": "USD",
+      "status": "suspended",
+      "service_zone": "East Coast",
+      "contact_email": "business@lasership.com",
+      "notes": "Suspendido. Tasa de incidencias superior al 8% en Q3.",
+      "updated_at": "2026-09-11T23:03:15.738086+00:00"
+    },
+    "6": {
+      "name": "PackSource LA",
+      "country": "USA",
+      "categories": [
+        "packaging_materials"
+      ],
+      "rate_per_shipment": 0.42,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "orders@packsource.com",
+      "notes": "Cajas, relleno y precinto para el almacén de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.747899+00:00"
+    },
+    "7": {
+      "name": "CleanTeam West",
+      "country": "USA",
+      "categories": [
+        "cleaning_and_facilities"
+      ],
+      "rate_per_shipment": 1800.0,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "accounts@cleanteamwest.com",
+      "notes": "Tarifa mensual por servicio de limpieza del almacén de LA.",
+      "updated_at": "2026-09-11T23:03:15.749698+00:00"
+    },
+    "8": {
+      "name": "MRW España",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 4.9,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Península Ibérica",
+      "contact_email": "clientes.empresa@mrw.es",
+      "notes": "Carrier principal para entregas en España. Contrato negociado por volumen.",
+      "updated_at": "2026-09-11T23:03:15.752660+00:00"
+    },
+    "9": {
+      "name": "SEUR",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 5.2,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Península Ibérica + Baleares",
+      "contact_email": "grandes.cuentas@seur.com",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.759918+00:00"
+    },
+    "10": {
+      "name": "DHL Express España",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile",
+        "carrier_international"
+      ],
+      "rate_per_shipment": 12.8,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "España + Internacional",
+      "contact_email": "business.es@dhl.com",
+      "notes": "Envíos urgentes y exportaciones desde Zaragoza.",
+      "updated_at": "2026-09-11T23:03:15.766821+00:00"
+    },
+    "11": {
+      "name": "Nacex",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 4.6,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Aragón y zona norte",
+      "contact_email": "empresas@nacex.es",
+      "notes": "Carrier regional con buena cobertura en Aragón.",
+      "updated_at": "2026-09-11T23:03:15.769893+00:00"
+    },
+    "12": {
+      "name": "Logística Inversa Iberia",
+      "country": "Spain",
+      "categories": [
+        "reverse_logistics"
+      ],
+      "rate_per_shipment": 6.3,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "operaciones@liiberia.es",
+      "notes": "Gestión de devoluciones para el almacén de Zaragoza.",
+      "updated_at": "2026-09-11T23:03:15.775791+00:00"
+    },
+    "13": {
+      "name": "Embalajes Zaragoza S.L.",
+      "country": "Spain",
+      "categories": [
+        "packaging_materials"
+      ],
+      "rate_per_shipment": 0.28,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "pedidos@embalajeszgz.es",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.777821+00:00"
+    },
+    "14": {
+      "name": "SAP WM Cloud",
+      "country": "USA",
+      "categories": [
+        "it_and_wms_software"
+      ],
+      "rate_per_shipment": 2200.0,
+      "currency": "USD",
+      "status": "suspended",
+      "service_zone": null,
+      "contact_email": "enterprise@sap.com",
+      "notes": "Suspendido. Andrés está evaluando alternativas más ligeras para el almacén de LA.",
+      "updated_at": "2026-09-11T23:03:15.781861+00:00"
+    },
+    "15": {
+      "name": "ReturnBear",
+      "country": "USA",
+      "categories": [
+        "reverse_logistics"
+      ],
+      "rate_per_shipment": 4.15,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "partnerships@returnbear.com",
+      "notes": "Gestión de devoluciones para clientes de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.789921+00:00"
+    }
+  }
+}
