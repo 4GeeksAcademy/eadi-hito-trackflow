@@ -1,65 +1,18 @@
 const inventory = [
-  {
-    sku: "SHOE-BLK-42",
-    name: "Runner Black 42",
-    warehouse: "Los Ángeles",
-    stock: 184,
-    status: "En rango",
-    tone: "ok",
-  },
-  {
-    sku: "SERUM-VIT-C",
-    name: "Sérum Vitamina C",
-    warehouse: "Zaragoza",
-    stock: 32,
-    status: "Stock bajo",
-    tone: "warn",
-  },
-  {
-    sku: "HEADPHONES-X1",
-    name: "Auriculares X1",
-    warehouse: "Los Ángeles",
-    stock: 96,
-    status: "En rango",
-    tone: "ok",
-  },
-  {
-    sku: "JACKET-OLIVE-M",
-    name: "Chaqueta Olive M",
-    warehouse: "Zaragoza",
-    stock: 61,
-    status: "En rango",
-    tone: "ok",
-  },
+  { sku: 'SHOE-BLK-42', name: 'Runner Black 42', warehouse: 'Los Ángeles', stock: 184, status: 'En rango', tone: 'ok' },
+  { sku: 'SERUM-VIT-C', name: 'Sérum Vitamina C', warehouse: 'Zaragoza', stock: 32, status: 'Stock bajo', tone: 'warn' },
+  { sku: 'HEADPHONES-X1', name: 'Auriculares X1', warehouse: 'Los Ángeles', stock: 96, status: 'En rango', tone: 'ok' },
+  { sku: 'JACKET-OLIVE-M', name: 'Chaqueta Olive M', warehouse: 'Zaragoza', stock: 61, status: 'En rango', tone: 'ok' }
 ];
 const carriers = [
-  {
-    name: "SEUR",
-    country: "España · 1.240 envíos",
-    rate: "96,4%",
-    color: "#2f8b6a",
-  },
-  {
-    name: "UPS",
-    country: "Estados Unidos · 980 envíos",
-    rate: "94,1%",
-    color: "#ef795f",
-  },
-  {
-    name: "MRW",
-    country: "España · 740 envíos",
-    rate: "91,8%",
-    color: "#7d8ee8",
-  },
-  {
-    name: "FedEx",
-    country: "Estados Unidos · 620 envíos",
-    rate: "89,7%",
-    color: "#d09d3e",
-  },
+  { name: 'SEUR', country: 'España · 1.240 envíos', rate: '96,4%', color: '#2f8b6a' },
+  { name: 'UPS', country: 'Estados Unidos · 980 envíos', rate: '94,1%', color: '#ef795f' },
+  { name: 'MRW', country: 'España · 740 envíos', rate: '91,8%', color: '#7d8ee8' },
+  { name: 'FedEx', country: 'Estados Unidos · 620 envíos', rate: '89,7%', color: '#d09d3e' }
 ];
 
 export default function BackofficeHome() {
+<<<<<<< HEAD
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -212,4 +165,7 @@ export default function BackofficeHome() {
       </div>
     </>
   );
+=======
+  return <><a className="skip-link" href="#main-content">Ir al contenido principal</a><div className="ops-shell"><aside className="sidebar"><div className="brand">Track<span>Flow</span></div><nav aria-label="Navegación principal"><div className="side-label">Operación</div><a className="side-link active" href="#resumen"><span aria-hidden="true">◈</span> Resumen</a><a className="side-link" href="#inventario"><span aria-hidden="true">▦</span> Inventario</a><a className="side-link" href="#envios"><span aria-hidden="true">↗</span> Envíos</a><a className="side-link" href="#transportistas"><span aria-hidden="true">◎</span> Transportistas</a><div className="side-label">Empresa</div><a className="side-link" href="#devoluciones"><span aria-hidden="true">↩</span> Devoluciones</a><a className="side-link" href="#alertas"><span aria-hidden="true">!</span> Alertas</a></nav></aside><main className="main" id="main-content"><header className="topbar"><div><div className="eyebrow">TrackFlow Ops · Datos de demostración</div><h1>Buenos días, Ana.</h1></div><div className="date-pill">Actualizado hace 4 min · 09 sep 2026</div></header><section className="kpi-grid" aria-label="Indicadores principales"><div className="kpi"><div className="kpi-label">Pedidos hoy</div><div className="kpi-value">2.840</div><div className="kpi-note">↑ 12,8% vs. ayer</div></div><div className="kpi"><div className="kpi-label">Entregas a tiempo</div><div className="kpi-value">94,6%</div><div className="kpi-note">↑ 1,2 pts esta semana</div></div><div className="kpi"><div className="kpi-label">Stock bajo</div><div className="kpi-value">18 <small>SKUs</small></div><div className="kpi-note alert">5 requieren atención</div></div><div className="kpi"><div className="kpi-label">Devoluciones</div><div className="kpi-value">21,3%</div><div className="kpi-note info">Dentro del rango 18–25%</div></div></section><div className="content-grid"><section className="panel" id="inventario"><div className="panel-heading"><h2>Inventario por almacén</h2><span>4 de 2.390 SKUs</span></div><table className="inventory-table"><caption className="visually-hidden">Inventario de productos agrupado por almacén y estado de stock</caption><thead><tr><th scope="col">Producto</th><th scope="col">Almacén</th><th scope="col">Unidades</th><th scope="col">Estado</th></tr></thead><tbody>{inventory.map((item) => <tr key={item.sku}><td><span className="sku">{item.sku}</span><br /><span className="warehouse">{item.name}</span></td><td>{item.warehouse}</td><td>{item.stock}</td><td><span className={`status ${item.tone}`}>{item.tone === 'ok' ? '✓ ' : '⚠ '}{item.status}</span></td></tr>)}</tbody></table></section><section className="panel" id="transportistas"><div className="panel-heading"><h2>Rendimiento de carriers</h2><span>Esta semana</span></div><div className="carrier-list">{carriers.map((carrier) => <div className="carrier-row" key={carrier.name}><div><span className="carrier-name" style={{ borderLeft: `3px solid ${carrier.color}`, paddingLeft: 9 }}>{carrier.name}</span><span className="carrier-meta">{carrier.country}</span></div><span className="rate">{carrier.rate}</span></div>)}</div></section></div><div className="alert-panel" id="alertas"><strong>5 alertas de stock requieren revisión</strong><p>El Sérum Vitamina C y cuatro SKUs más están por debajo del umbral configurado en Zaragoza. Revisa la reposición antes del próximo corte.</p></div></main></div></>;
+>>>>>>> origin/main
 }
