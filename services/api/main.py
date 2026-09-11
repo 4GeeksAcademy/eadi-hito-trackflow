@@ -14,8 +14,11 @@ except ImportError as error:  # pragma: no cover - gives a useful local setup er
     raise RuntimeError("Instala services/api/requirements.txt para iniciar la API.") from error
 
 from .analyzer import IncidentSummary, analyze_csv_bytes
+from .routes.suppliers import router as suppliers_router
 
 app = FastAPI(title="TrackFlow Incident Analysis API", version="1.0.0")
+app.include_router(suppliers_router)
+app.include_router(suppliers_router, prefix="/api")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3001", "http://127.0.0.1:3001"],

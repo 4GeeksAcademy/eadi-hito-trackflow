@@ -94,6 +94,9 @@ export default function BackofficeHome() {
             <a className="side-link" href="/incidents">
               <span aria-hidden="true">▤</span> Incidencias
             </a>
+            <a className="side-link" href="/suppliers">
+              <span aria-hidden="true">◌</span> Proveedores
+            </a>
           </nav>
         </aside>
         <main className="main" id="main-content">

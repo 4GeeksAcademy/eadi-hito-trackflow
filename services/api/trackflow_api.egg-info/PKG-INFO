@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: trackflow-api
+Version: 0.1.0
+Summary: TrackFlow operational API
+Requires-Python: >=3.11
+Requires-Dist: fastapi<1,>=0.115
+Requires-Dist: tinydb<5,>=4.8
+Requires-Dist: uvicorn[standard]<1,>=0.30
+Requires-Dist: python-multipart<1,>=0.0.9
+Requires-Dist: pydantic[email]<3,>=2.0
