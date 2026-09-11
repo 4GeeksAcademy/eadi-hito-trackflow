@@ -59,6 +59,62 @@ class SupplierBase(BaseModel):
             raise ValueError(f"La moneda para {self.country.value} debe ser {expected}")
         return self
 
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    MANAGER = "manager"
+    USER = "user"
+
+class User(BaseModel):
+    id: int
+    email: EmailStr
+    hashed_password: str
+    is_active: bool = True
+    role: UserRole = UserRole.USER
+    created_at: datetime
+
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+    is_active: bool
+    role: UserRole
+    created_at: datetime
+
+class Profile(BaseModel):
+    id: int
+    user_id: int
+    name: str | None = None
+    phone: str | None = None
+    address: str | None = None
+
+class ProfileInput(BaseModel):
+    name: str | None = None
+    phone: str | None = None
+    address: str | None = None
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8)
+    name: str | None = None
+    phone: str | None = None
+    address: str | None = None
+
+class UserUpdate(BaseModel):
+    email: EmailStr | None = None
+    role: UserRole | None = None
+    is_active: bool | None = None
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class AuthenticatedUser(BaseModel):
+    user: UserResponse
+    profile: Profile
+
 
 class SupplierCreate(SupplierBase):
     pass
