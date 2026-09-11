@@ -3,3 +3,5 @@ uvicorn[standard]>=0.30,<1
 python-multipart>=0.0.9,<1
 tinydb>=4.8,<5
 pydantic[email]>=2.0,<3
+python-jose[cryptography]>=3.5.0
+libpass[bcrypt]>=1.9.3

@@ -3,7 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from ..auth_dependencies import get_current_user
 from ..database import get_db
 from ..models import (
     Country,
@@ -35,6 +36,7 @@ def create_supplier(payload: SupplierCreate) -> Supplier:
 def list_suppliers(
     country: Country | None = Query(default=None),
     category: str | None = Query(default=None),
+    current_user=Depends(get_current_user),
 ) -> list[Supplier]:
     with get_db() as db:
         records = db.all()
@@ -46,7 +48,7 @@ def list_suppliers(
 
 
 @router.get("/{supplier_id}", response_model=Supplier)
-def get_supplier(supplier_id: int) -> Supplier:
+def get_supplier(supplier_id: int, current_user=Depends(get_current_user)) -> Supplier:
     with get_db() as db:
         record = _find_supplier(db, supplier_id)
     if record is None:
@@ -55,7 +57,7 @@ def get_supplier(supplier_id: int) -> Supplier:
 
 
 @router.patch("/{supplier_id}/rate", response_model=Supplier)
-def update_supplier_rate(supplier_id: int, payload: SupplierUpdateRate) -> Supplier:
+def update_supplier_rate(supplier_id: int, payload: SupplierUpdateRate, current_user=Depends(get_current_user)) -> Supplier:
     with get_db() as db:
         record = _find_supplier(db, supplier_id)
         if record is None:
@@ -65,7 +67,7 @@ def update_supplier_rate(supplier_id: int, payload: SupplierUpdateRate) -> Suppl
 
 
 @router.patch("/{supplier_id}/status", response_model=Supplier)
-def update_supplier_status(supplier_id: int, payload: SupplierUpdateStatus) -> Supplier:
+def update_supplier_status(supplier_id: int, payload: SupplierUpdateStatus, current_user=Depends(get_current_user)) -> Supplier:
     with get_db() as db:
         record = _find_supplier(db, supplier_id)
         if record is None:
@@ -75,7 +77,7 @@ def update_supplier_status(supplier_id: int, payload: SupplierUpdateStatus) -> S
 
 
 @router.delete("/{supplier_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_supplier(supplier_id: int) -> None:
+def delete_supplier(supplier_id: int, current_user=Depends(get_current_user)) -> None:
     with get_db() as db:
         if _find_supplier(db, supplier_id) is None:
             raise HTTPException(status_code=404, detail="Proveedor no encontrado.")
