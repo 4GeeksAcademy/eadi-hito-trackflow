@@ -1,0 +1,567 @@
+{
+  "_default": {
+    "1": {
+      "name": "UPS Ground",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 7.45,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "business@ups.com",
+      "notes": "Carrier principal para entregas locales en Los Ángeles y alrededores.",
+      "updated_at": "2026-09-11T23:03:15.700188+00:00"
+    },
+    "2": {
+      "name": "FedEx Ground",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 7.9,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "Continental USA",
+      "contact_email": "business.solutions@fedex.com",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.728070+00:00"
+    },
+    "3": {
+      "name": "DHL Express USA",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile",
+        "carrier_international"
+      ],
+      "rate_per_shipment": 14.2,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "Continental USA + International",
+      "contact_email": "business.us@dhl.com",
+      "notes": "Usado para envíos urgentes y exportaciones a Europa.",
+      "updated_at": "2026-09-11T23:03:15.729876+00:00"
+    },
+    "4": {
+      "name": "OnTrac",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 6.1,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "solutions@ontrac.com",
+      "notes": "Carrier regional. Mejor tarifa en la zona de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.732493+00:00"
+    },
+    "5": {
+      "name": "Laser Ship",
+      "country": "USA",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 5.8,
+      "currency": "USD",
+      "status": "suspended",
+      "service_zone": "East Coast",
+      "contact_email": "business@lasership.com",
+      "notes": "Suspendido. Tasa de incidencias superior al 8% en Q3.",
+      "updated_at": "2026-09-11T23:03:15.738086+00:00"
+    },
+    "6": {
+      "name": "PackSource LA",
+      "country": "USA",
+      "categories": [
+        "packaging_materials"
+      ],
+      "rate_per_shipment": 0.42,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "orders@packsource.com",
+      "notes": "Cajas, relleno y precinto para el almacén de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.747899+00:00"
+    },
+    "7": {
+      "name": "CleanTeam West",
+      "country": "USA",
+      "categories": [
+        "cleaning_and_facilities"
+      ],
+      "rate_per_shipment": 1800.0,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "accounts@cleanteamwest.com",
+      "notes": "Tarifa mensual por servicio de limpieza del almacén de LA.",
+      "updated_at": "2026-09-11T23:03:15.749698+00:00"
+    },
+    "8": {
+      "name": "MRW España",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 4.9,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Península Ibérica",
+      "contact_email": "clientes.empresa@mrw.es",
+      "notes": "Carrier principal para entregas en España. Contrato negociado por volumen.",
+      "updated_at": "2026-09-11T23:03:15.752660+00:00"
+    },
+    "9": {
+      "name": "SEUR",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 5.2,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Península Ibérica + Baleares",
+      "contact_email": "grandes.cuentas@seur.com",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.759918+00:00"
+    },
+    "10": {
+      "name": "DHL Express España",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile",
+        "carrier_international"
+      ],
+      "rate_per_shipment": 12.8,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "España + Internacional",
+      "contact_email": "business.es@dhl.com",
+      "notes": "Envíos urgentes y exportaciones desde Zaragoza.",
+      "updated_at": "2026-09-11T23:03:15.766821+00:00"
+    },
+    "11": {
+      "name": "Nacex",
+      "country": "Spain",
+      "categories": [
+        "carrier_last_mile"
+      ],
+      "rate_per_shipment": 4.6,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": "Aragón y zona norte",
+      "contact_email": "empresas@nacex.es",
+      "notes": "Carrier regional con buena cobertura en Aragón.",
+      "updated_at": "2026-09-11T23:03:15.769893+00:00"
+    },
+    "12": {
+      "name": "Logística Inversa Iberia",
+      "country": "Spain",
+      "categories": [
+        "reverse_logistics"
+      ],
+      "rate_per_shipment": 6.3,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "operaciones@liiberia.es",
+      "notes": "Gestión de devoluciones para el almacén de Zaragoza.",
+      "updated_at": "2026-09-11T23:03:15.775791+00:00"
+    },
+    "13": {
+      "name": "Embalajes Zaragoza S.L.",
+      "country": "Spain",
+      "categories": [
+        "packaging_materials"
+      ],
+      "rate_per_shipment": 0.28,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": "pedidos@embalajeszgz.es",
+      "notes": null,
+      "updated_at": "2026-09-11T23:03:15.777821+00:00"
+    },
+    "14": {
+      "name": "SAP WM Cloud",
+      "country": "USA",
+      "categories": [
+        "it_and_wms_software"
+      ],
+      "rate_per_shipment": 2200.0,
+      "currency": "USD",
+      "status": "suspended",
+      "service_zone": null,
+      "contact_email": "enterprise@sap.com",
+      "notes": "Suspendido. Andrés está evaluando alternativas más ligeras para el almacén de LA.",
+      "updated_at": "2026-09-11T23:03:15.781861+00:00"
+    },
+    "15": {
+      "name": "ReturnBear",
+      "country": "USA",
+      "categories": [
+        "reverse_logistics"
+      ],
+      "rate_per_shipment": 4.15,
+      "currency": "USD",
+      "status": "active",
+      "service_zone": "West Coast",
+      "contact_email": "partnerships@returnbear.com",
+      "notes": "Gestión de devoluciones para clientes de Los Ángeles.",
+      "updated_at": "2026-09-11T23:03:15.789921+00:00"
+    }
+  },
+  "users": {
+    "1": {
+      "email": "eadi.para.composio@gmail.com",
+      "hashed_password": "$2b$12$6QXS6hArNEU8GVXet0.YnOeU6VxAfMw5T8w.uFu0eStDjkDr1gr86",
+      "is_active": true,
+      "role": "user",
+      "created_at": "2026-09-12T00:20:44.762469+00:00"
+    },
+    "2": {
+      "email": "test@test.com",
+      "hashed_password": "$2b$12$l5sAabDaHSdHmxtFylH1jebNtWH94ZdAPQC6nAMLiGeDVtXCB5gQq",
+      "is_active": true,
+      "role": "user",
+      "created_at": "2026-09-16T23:34:45.985387+00:00"
+    },
+    "3": {
+      "email": "test-flow@test.com",
+      "hashed_password": "$2b$12$MAJ8sTVP.HY061agx29rT.0eC9Vjw/KyH.8GOU7wg7H7IguFpnwAe",
+      "is_active": true,
+      "role": "user",
+      "created_at": "2026-09-17T01:40:12.982658+00:00"
+    }
+  },
+  "profiles": {
+    "1": {
+      "user_id": 1,
+      "name": "Eevee",
+      "phone": null,
+      "address": null
+    },
+    "2": {
+      "user_id": 2,
+      "name": null,
+      "phone": null,
+      "address": null
+    },
+    "3": {
+      "user_id": 3,
+      "name": "Test User",
+      "phone": null,
+      "address": null
+    }
+  },
+  "password_reset_tokens": {
+    "1": {
+      "token_id": "6cYZ5f3_VKUzcHFxuu4I2U9hb6IfjQJL",
+      "user_id": 1,
+      "expires_at": "2026-09-12T00:51:20.722416+00:00",
+      "used_at": null
+    },
+    "2": {
+      "token_id": "fLJ_yU0jT1HpT98pd68O78isP7F_48a1",
+      "user_id": 1,
+      "expires_at": "2026-09-12T00:53:20.855688+00:00",
+      "used_at": null
+    },
+    "3": {
+      "token_id": "s8EWkGqXrLIvQ4bSu7XFMWrgPR8TxuT2",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:04:43.973035+00:00",
+      "used_at": null
+    },
+    "4": {
+      "token_id": "_EG77zwMwD-IE7V9q35n79Wh-tohRq40",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:19:36.309690+00:00",
+      "used_at": null
+    },
+    "5": {
+      "token_id": "rwkl41Ho0-Oo-s_Sw4AHiseUGRoZuvrR",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:25:22.908904+00:00",
+      "used_at": null
+    },
+    "6": {
+      "token_id": "ZWiSpaCjjcKXjOvHZSxbQj3OyHfS3xaF",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:27:49.816004+00:00",
+      "used_at": null
+    },
+    "7": {
+      "token_id": "cCjyMDOO7TG85cG6GVuYbXUPhiRW19mV",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:30:19.458624+00:00",
+      "used_at": null
+    },
+    "8": {
+      "token_id": "eeHHZdbKwu8g2nwf92t69plzMBbrjoze",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:36:01.122424+00:00",
+      "used_at": null
+    },
+    "9": {
+      "token_id": "zrRTmSgFD6QiPggMr0LqyrLqW7l12-vQ",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:47:00.553385+00:00",
+      "used_at": null
+    },
+    "10": {
+      "token_id": "UkBJZgdPEKqzzrjiCeL_AuXBx7dzRsxk",
+      "user_id": 1,
+      "expires_at": "2026-09-12T01:57:43.268260+00:00",
+      "used_at": null
+    },
+    "11": {
+      "token_id": "LGdkTJge155PL2pR7o8cu0JcuYxRqXpM",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:03:20.347466+00:00",
+      "used_at": null
+    },
+    "12": {
+      "token_id": "jIkf29-SVLAJMRFKuP8R0Z0ki2ByFqnO",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:08:37.991564+00:00",
+      "used_at": null
+    },
+    "13": {
+      "token_id": "ZlW4Ds9_e7Ssfmy7jkYg21X4lqC8qB8j",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:11:23.552447+00:00",
+      "used_at": null
+    },
+    "14": {
+      "token_id": "GGl2_D_pZpIsL2e3_pGa2AluuNTm0IK9",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:08:21.488171+00:00",
+      "used_at": null
+    },
+    "15": {
+      "token_id": "JP_avC7PQNVK9VmtTViZ_yErNxTXik_1",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:09:20.416487+00:00",
+      "used_at": null
+    },
+    "16": {
+      "token_id": "MVbwpFMOBtBmnn9TsF0jBb6iMDQXgwcr",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:38:38.337884+00:00",
+      "used_at": null
+    },
+    "17": {
+      "token_id": "C_zEaMHPhkMCbrqhCI-f9eUj2clF-JL7",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:40:41.414239+00:00",
+      "used_at": null
+    },
+    "18": {
+      "token_id": "7C9KUtFTqoyIPsikzMWqUOpcF8GPN1j2",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:41:26.111917+00:00",
+      "used_at": null
+    },
+    "19": {
+      "token_id": "o_WAG6B3uCK_-YUAYJsRN0k0WqD310YY",
+      "user_id": 1,
+      "expires_at": "2026-09-14T23:47:08.541015+00:00",
+      "used_at": null
+    },
+    "20": {
+      "token_id": "j13lWEPlpTDwW2034yZkiyWYBuWaf2lp",
+      "user_id": 1,
+      "expires_at": "2026-09-15T00:18:42.436007+00:00",
+      "used_at": null
+    },
+    "21": {
+      "token_id": "YGIPqCtggTuk8kTTbIICKuGx4Mt2_BN2",
+      "user_id": 1,
+      "expires_at": "2026-09-15T00:22:39.868944+00:00",
+      "used_at": null
+    },
+    "22": {
+      "token_id": "jlU_9sRXtygHgx5Ga-oLs6FjKyzzlltY",
+      "user_id": 1,
+      "expires_at": "2026-09-15T00:35:07.137345+00:00",
+      "used_at": null
+    },
+    "23": {
+      "token_id": "5ehLq9VIPAZ9i23N94TRC0VdDJ003L1Z",
+      "user_id": 1,
+      "expires_at": "2026-09-16T23:44:49.067648+00:00",
+      "used_at": null
+    },
+    "24": {
+      "token_id": "iXk9XCvNmZDYv78foJJm3hJSCN-HSbzB",
+      "user_id": 2,
+      "expires_at": "2026-09-16T23:50:04.641898+00:00",
+      "used_at": null
+    },
+    "25": {
+      "token_id": "94vucWCykg8WtRsOLsF2xYVcRcFXM50X",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:10:23.943978+00:00",
+      "used_at": null
+    },
+    "26": {
+      "token_id": "WTNOpf8jmdyOMabJNWRAwdS6D_kVFG7N",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:12:26.973868+00:00",
+      "used_at": null
+    },
+    "27": {
+      "token_id": "vDtUldDE4jvV6hcZruwxX_z_pVJFVpur",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:12:42.472716+00:00",
+      "used_at": null
+    },
+    "28": {
+      "token_id": "o8FqEZHMQUa5Po__fBkYN063uHHFZqom",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:18:16.811260+00:00",
+      "used_at": null
+    },
+    "29": {
+      "token_id": "QIJiIpqLY8H8v8EUqpzObGhRf9klwJ30",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:29:37.494862+00:00",
+      "used_at": null
+    },
+    "30": {
+      "token_id": "d1-baOe2nvzNOWPwVZhiCkcGA_TjbdOg",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:29:38.318586+00:00",
+      "used_at": null
+    },
+    "31": {
+      "token_id": "TkzlfKlcZ2tamL1VgsgqTzn5EvPP1dpi",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:41:28.078031+00:00",
+      "used_at": null
+    },
+    "32": {
+      "token_id": "O6NZwhb6dw6IssUz5wlklqcaAFrUoETQ",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:43:49.876325+00:00",
+      "used_at": null
+    },
+    "33": {
+      "token_id": "7w__813-6EOoPAHSXTmSPXsXW2qmqL-u",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:43:50.171363+00:00",
+      "used_at": null
+    },
+    "34": {
+      "token_id": "6TXlw-2SJvoo9VuBTC0bx_NJMDenSXfp",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:50:03.989928+00:00",
+      "used_at": null
+    },
+    "35": {
+      "token_id": "neGc2PZGplDx_kRwQcyapfBUGyyJ8wOh",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:52:42.020784+00:00",
+      "used_at": null
+    },
+    "36": {
+      "token_id": "N6peWH-aHebhPvapSossT6488kzSRNt5",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:55:13.762986+00:00",
+      "used_at": null
+    },
+    "37": {
+      "token_id": "rYYZqCkZa1n76YRxbDl3IYGS5FvGCTgJ",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:55:14.581092+00:00",
+      "used_at": null
+    },
+    "38": {
+      "token_id": "zQLv8e_Q3tV3Iw1rMEwGU_Gn1oBfgu1L",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:55:26.238764+00:00",
+      "used_at": "2026-09-17T01:40:42.611813+00:00"
+    },
+    "39": {
+      "token_id": "bCnhuIqsJR7bODcvZtpmKdPeayyBbgnP",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:56:06.339256+00:00",
+      "used_at": "2026-09-17T01:41:42.399589+00:00"
+    },
+    "40": {
+      "token_id": "Jy_8DFdq7m4qoEreS_rnTNJ97_Rz2Xka",
+      "user_id": 1,
+      "expires_at": "2026-09-17T01:58:32.050376+00:00",
+      "used_at": null
+    },
+    "41": {
+      "token_id": "935iYCQO_3dEs38KWH-cLddRhXYUKQsN",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:07:13.270617+00:00",
+      "used_at": null
+    },
+    "42": {
+      "token_id": "CfLRbQvYDpsjpP50EuKnqYAx8ptx2NCF",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:08:48.033660+00:00",
+      "used_at": null
+    },
+    "43": {
+      "token_id": "OtHcsqnIW_PBVYqbnY4Hn4fF_1D2xphQ",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:09:03.574892+00:00",
+      "used_at": null
+    },
+    "44": {
+      "token_id": "Czqyv_VrEdpEItl78hbxoiX_D6jUrVaE",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:10:29.505787+00:00",
+      "used_at": null
+    },
+    "45": {
+      "token_id": "7i2O-jNeyMUlFKt_fmQ5b-6bnocqf1GR",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:10:30.250576+00:00",
+      "used_at": "2026-09-17T01:55:30.614559+00:00"
+    },
+    "46": {
+      "token_id": "AOHNVz8N6mMLt-6sLSkPYrOnX7RoIE9T",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:11:43.357894+00:00",
+      "used_at": null
+    },
+    "47": {
+      "token_id": "5MYsnK0M7jW7EpaZ4AybLVnJgbvOgHYR",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:17:56.357942+00:00",
+      "used_at": null
+    },
+    "48": {
+      "token_id": "Z7JoKqeXOBQeGnhcAa9xdoN1y1AVviXr",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:24:18.318415+00:00",
+      "used_at": null
+    },
+    "49": {
+      "token_id": "JaPklOe7mQcM9emV0TrrYnbKbze-bkV6",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:28:25.083912+00:00",
+      "used_at": null
+    },
+    "50": {
+      "token_id": "m9c29UCXz7IYFKrhYVeg42TuzYY8g_63",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:28:58.990043+00:00",
+      "used_at": null
+    },
+    "51": {
+      "token_id": "FwLA0cF-JVSQ-5N-hPp5_krUAahKVSkJ",
+      "user_id": 1,
+      "expires_at": "2026-09-17T02:43:51.802439+00:00",
+      "used_at": "2026-09-17T02:29:16.853538+00:00"
+    }
+  }
+}
