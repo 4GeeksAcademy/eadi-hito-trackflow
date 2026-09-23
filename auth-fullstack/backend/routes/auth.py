@@ -8,7 +8,7 @@ from auth_dependencies import create_access_token, get_current_user
 from auth_service import get_profile_by_user_id, get_user_by_email, update_password, user_response, verify_password
 from email_service import EmailConfigurationError
 from models import AuthenticatedUser, ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, TokenResponse, User
-from password_reset_service import consume_reset_token, send_reset_for_email
+from password_reset_service import consume_reset_token, send_reset_for_email, validate_reset_token
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +37,23 @@ def forgot_password(payload: ForgotPasswordRequest) -> dict[str, str]:
         send_reset_for_email(str(payload.email))
     except EmailConfigurationError:
         logger.warning("Password reset email no enviado: configuración de email incompleta.")
-    except RuntimeError as error:
-        logger.error("Password reset email no enviado: %s", error)
+    except RuntimeError:
+        logger.error("Password reset email no enviado por un fallo del proveedor.")
     return {"message": "Si esa dirección está registrada, recibirás un enlace en breve"}
 
 
 @router.post("/reset-password", status_code=status.HTTP_200_OK)
 def reset_password(payload: ResetPasswordRequest) -> dict[str, str]:
     try:
-        user_id = consume_reset_token(payload.token)
+        user_id, token_id = validate_reset_token(payload.token)
     except ValueError as error:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(error)) from error
-    update_password(user_id, payload.new_password)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El enlace no es válido o ya fue utilizado.") from error
+    if update_password(user_id, payload.new_password) is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se pudo encontrar el usuario.")
+    try:
+        consume_reset_token(token_id)
+    except ValueError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El enlace ya fue utilizado. Solicita uno nuevo.") from error
     return {"message": "Contraseña restablecida correctamente."}
 
 
@@ -56,5 +61,6 @@ def reset_password(payload: ResetPasswordRequest) -> dict[str, str]:
 def change_password(payload: ChangePasswordRequest, user: User = Depends(get_current_user)) -> dict[str, str]:
     if not verify_password(payload.current_password, user):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La contraseña actual es incorrecta.")
-    update_password(user.id, payload.new_password)
+    if update_password(user.id, payload.new_password) is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se pudo encontrar el usuario.")
     return {"message": "Contraseña actualizada correctamente."}

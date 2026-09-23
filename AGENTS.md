@@ -23,4 +23,8 @@ Sin confirmación explícita del desarrollador, el agente no debe modificar:
 - `.env*`, credenciales, secretos o configuración de despliegue compartida.
 - Historial Git, ramas o commits existentes.
 
-Las nuevas aplicaciones deben vivir en `uis/website/` y `uis/backoffice/`. Los servicios backend deben vivir en `services/`.
+A partir de la reestructuración (`feature/forgot-password`):
+- **`backend/`** → API FastAPI (Python) — reemplaza `services/api/`
+- **`frontend/`** → Aplicación Next.js (TypeScript) — reemplaza `uis/backoffice/`
+- **`auth/`** → Tipos y modelos compartidos (Python + TypeScript)
+- Las rutas antiguas `services/api/` y `uis/backoffice/` están obsoletas y serán eliminadas.

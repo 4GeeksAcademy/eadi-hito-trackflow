@@ -44,7 +44,7 @@ def send_reset_for_email(email: str) -> None:
     send_password_reset_email(str(user.email), token)
 
 
-def consume_reset_token(token: str) -> int:
+def validate_reset_token(token: str) -> tuple[int, str]:
     secret, _ = _settings()
     try:
         payload = jwt.decode(token, secret, algorithms=["HS256"])
@@ -63,7 +63,16 @@ def consume_reset_token(token: str) -> int:
         expires_at = datetime.fromisoformat(record["expires_at"])
         if expires_at <= datetime.now(timezone.utc):
             raise ValueError("Token inválido o expirado.")
-        table.update({"used_at": datetime.now(timezone.utc).isoformat()}, doc_ids=[record.doc_id])
     if get_user_by_id(user_id) is None:
         raise ValueError("Usuario no encontrado.")
-    return user_id
+    return user_id, token_id
+
+
+def consume_reset_token(token_id: str) -> None:
+    """Marca como usado el token que ya fue validado por el flujo de reset."""
+    with get_db() as db:
+        table = db.table("password_reset_tokens")
+        record = table.get(lambda item: item.get("token_id") == token_id)
+        if record is None or record.get("used_at") is not None:
+            raise ValueError("Token inválido o ya utilizado.")
+        table.update({"used_at": datetime.now(timezone.utc).isoformat()}, doc_ids=[record.doc_id])

@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from passlib.hash import bcrypt
+import bcrypt
 from tinydb import Query
 
 from database import get_db
@@ -50,7 +50,7 @@ def create_user(payload: UserCreate) -> User:
     now = datetime.now(timezone.utc).isoformat()
     user_record = {
         "email": str(payload.email).lower(),
-        "hashed_password": bcrypt.hash(payload.password),
+        "hashed_password": _hash_password(payload.password),
         "is_active": True,
         "role": UserRole.USER.value,
         "created_at": now,
@@ -67,7 +67,10 @@ def create_user(payload: UserCreate) -> User:
 
 
 def verify_password(password: str, user: User) -> bool:
-    return bcrypt.verify(password, user.hashed_password)
+    try:
+        return bcrypt.checkpw(password.encode("utf-8"), user.hashed_password.encode("utf-8"))
+    except (ValueError, TypeError):
+        return False
 
 
 def update_password(user_id: int, new_password: str) -> User | None:
@@ -75,8 +78,12 @@ def update_password(user_id: int, new_password: str) -> User | None:
         users = db.table("users")
         if users.get(doc_id=user_id) is None:
             return None
-        users.update({"hashed_password": bcrypt.hash(new_password)}, doc_ids=[user_id])
+        users.update({"hashed_password": _hash_password(new_password)}, doc_ids=[user_id])
         return _user_from_record(users.get(doc_id=user_id))
+
+
+def _hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 def update_user(user_id: int, payload: UserUpdate) -> User | None:

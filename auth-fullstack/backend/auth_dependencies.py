@@ -53,7 +53,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
         user_id = int(subject)
     except (JWTError, ValueError, RuntimeError) as error:
         if isinstance(error, RuntimeError):
-            raise HTTPException(status_code=500, detail=str(error)) from error
+            raise HTTPException(status_code=500, detail="El servicio de autenticación no está disponible.") from error
         raise credentials_error from error
     user = get_user_by_id(user_id)
     if user is None or not user.is_active:

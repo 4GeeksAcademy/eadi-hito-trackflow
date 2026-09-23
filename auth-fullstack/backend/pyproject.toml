@@ -11,7 +11,7 @@ dependencies = [
   "pydantic[email]>=2.0,<3",
   "python-jose[cryptography]>=3.5.0",
   "passlib[bcrypt]>=1.7.1,<2",
-  "bcrypt>=3.2,<4.0",
+  "bcrypt>=4.0,<6.0",
   "python-dotenv>=1.0,<2",
   "resend>=2.45,<3",
 ]
