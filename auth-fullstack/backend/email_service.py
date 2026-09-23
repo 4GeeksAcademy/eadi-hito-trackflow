@@ -45,5 +45,5 @@ def send_password_reset_email(to_email: str, token: str) -> None:
                 ),
             }
         )
-    except Exception as error:
-        raise RuntimeError(f"No se pudo enviar el email de restablecimiento: {error}") from error
+    except (resend.BatchValidationError, OSError) as error:
+        raise RuntimeError("No se pudo enviar el email de restablecimiento.") from error

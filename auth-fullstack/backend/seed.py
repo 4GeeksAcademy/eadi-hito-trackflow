@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import sys
 
 try:
     from database import get_db
@@ -27,4 +28,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (OSError, ValueError, KeyError) as error:
+        print(f"No se pudo cargar la semilla de proveedores: {error}", file=sys.stderr)
+        sys.exit(1)

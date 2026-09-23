@@ -1,5 +1,19 @@
 # TrackFlow
 
+## Variables de recuperación de contraseña
+
+Configura estas variables en `backend/.env` (ese archivo está ignorado por Git): `JWT_SECRET_KEY`, `ACCESS_TOKEN_EXPIRE_MINUTES`, `PASSWORD_RESET_EXPIRE_MINUTES`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL` y `FRONTEND_URL`. La clave `RESEND_API_KEY` se utiliza únicamente para enviar el enlace mediante Resend.
+
+## Estructura del proyecto
+
+```
+backend/           → API FastAPI (Python)
+frontend/          → Aplicación Next.js (TypeScript)
+auth/              → Tipos y modelos compartidos (Python + TypeScript)
+services/api/      → (obsoleto)
+uis/backoffice/    → (obsoleto)
+```
+
 Landing corporativa y formulario de solicitud de información para TrackFlow.
 
 ## Ejecutar localmente

@@ -23,7 +23,7 @@ def register_user(payload: UserCreate) -> UserResponse:
     try:
         user = create_user(payload)
     except ValueError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un usuario con ese email.") from error
     return UserResponse(**user_response(user))
 
 
@@ -55,7 +55,7 @@ def update_user_endpoint(user_id: int, payload: UserUpdate, current_user: User =
     try:
         user = update_user(user_id, payload)
     except ValueError as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un usuario con ese email.") from error
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado.")
     return UserResponse(**user_response(user))
