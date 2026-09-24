@@ -1,3 +1,13 @@
+## Gestor de incidencias
+
+La cobertura específica está en `auth-fullstack/backend/tests/test_incidents.py` e incluye creación, listado, filtros, detalle 404, resumen vacío, transiciones válidas/ inválidas y validación de payload.
+
+```bash
+cd auth-fullstack/backend
+uv run pytest tests/test_incidents.py
+```
+
+El frontend de incidencias se valida con `npm run lint` y `npm run build` desde `auth-fullstack/frontend`. El CSV histórico está en `content/contexts/incidents-file-analysis/incidents-trackflow.csv`. El seed localizó 100 filas: 99 válidas y 1 inválida (`TRF-000042`, categoría vacía), por lo que cargó 99 incidencias. La distribución real del fichero difiere de los totales de referencia de `CONTEXT_5.md` (que habla de 95 registros); se conserva el CSV sin alterar y se reporta esa discrepancia.
 # Plan y ejecución de pruebas
 
 ## Cómo ejecutar las pruebas

@@ -1,3 +1,15 @@
+## Estructura del gestor de incidencias
+
+Las rutas canónicas del hito son:
+
+```text
+scripts/seed_incidents.py
+packages/shared/
+services/incident-api/  -> auth-fullstack/backend
+uis/incident-manager/   -> auth-fullstack/frontend
+```
+
+Las dos últimas son enlaces simbólicos de compatibilidad: el código no se duplica y la aplicación existente conserva sus comandos, imports y funcionalidades de autenticación.
 # TrackFlow
 
 ## Variables de recuperación de contraseña
