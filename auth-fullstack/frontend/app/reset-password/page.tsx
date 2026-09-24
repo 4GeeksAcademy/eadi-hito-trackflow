@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token') ?? '';
   const [password, setPassword] = useState('');
@@ -37,4 +37,8 @@ export default function ResetPasswordPage() {
   }
 
   return <main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Nueva contraseña</h1>{!token && <p className="incident-error" role="alert">Falta el token de restablecimiento.</p>}<form onSubmit={submit}><label>Nueva contraseña<input type="password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} /></label><label>Confirmar contraseña<input type="password" required minLength={8} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={!token || submitting}>{submitting ? 'Guardando…' : 'Guardar contraseña'}</button></form><Link href="/forgot-password">Solicitar otro enlace</Link></section></main>;
+}
+
+export default function ResetPasswordPage() {
+  return <Suspense fallback={<main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Nueva contraseña</h1><p role="status">Cargando formulario…</p></section></main>}><ResetPasswordForm /></Suspense>;
 }

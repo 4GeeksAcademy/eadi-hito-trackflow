@@ -1,0 +1,10 @@
+fastapi<1,>=0.115
+tinydb<5,>=4.8
+uvicorn[standard]<1,>=0.30
+python-multipart<1,>=0.0.9
+pydantic[email]<3,>=2.0
+python-jose[cryptography]>=3.5.0
+passlib[bcrypt]<2,>=1.7.1
+bcrypt<6.0,>=4.0
+python-dotenv<2,>=1.0
+resend<3,>=2.45
