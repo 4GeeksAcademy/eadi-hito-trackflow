@@ -1,101 +1,18 @@
 'use client';
 
-import { ChangeEvent, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-type Incident = {
-  id: string;
-  type: string;
-  carrier: string;
-  status: 'Abierta' | 'En revisión' | 'Resuelta';
-  priority: 'Alta' | 'Media' | 'Baja';
-  date: string;
-};
-
-const demoIncidents: Incident[] = [
-  { id: 'INC-2048', type: 'Entrega fallida', carrier: 'SEUR', status: 'Abierta', priority: 'Alta', date: '09 sep 2026' },
-  { id: 'INC-2047', type: 'Paquete dañado', carrier: 'UPS', status: 'En revisión', priority: 'Media', date: '09 sep 2026' },
-  { id: 'INC-2046', type: 'Dirección incorrecta', carrier: 'MRW', status: 'Abierta', priority: 'Media', date: '08 sep 2026' },
-  { id: 'INC-2045', type: 'Retraso en tránsito', carrier: 'FedEx', status: 'Resuelta', priority: 'Baja', date: '08 sep 2026' },
-];
-
-function parseCsv(fileText: string): Incident[] {
-  const rows = fileText.trim().split(/\r?\n/).slice(1);
-  return rows.map((row, index) => {
-    const [type = 'Incidencia importada', carrier = 'Sin asignar', status = 'Abierta', priority = 'Media', date = 'Hoy'] = row.split(',').map((value) => value.trim());
-    return { id: `CSV-${String(index + 1).padStart(3, '0')}`, type, carrier, status: status as Incident['status'], priority: priority as Incident['priority'], date };
-  }).filter((incident) => incident.type);
-}
+type Incident = { id: number; title: string; description: string; category: string; status: 'open' | 'in_progress' | 'resolved' | 'discarded'; origin: 'customer' | 'branch' | 'internal'; branch: string; created_at: string; updated_at: string };
+type Summary = { by_status: Record<string, number>; by_category: Record<string, number>; by_origin: Record<string, number>; by_branch: Record<string, number> };
+const labels: Record<string, string> = { open: 'Abierta', in_progress: 'En curso', resolved: 'Resuelta', discarded: 'Descartada', customer: 'Cliente', branch: 'Sede', internal: 'Interno', central: 'Central', la_warehouse: 'Los Ángeles — Almacén', la_office: 'Los Ángeles — Oficina', zaragoza_warehouse: 'Zaragoza — Almacén', zaragoza_office: 'Zaragoza — Oficina' };
+const categories = ['lost_parcel', 'delivery_failure', 'inventory_discrepancy', 'carrier_issue', 'returns_issue', 'warehouse_incident', 'system_failure', 'client_complaint', 'other'];
 
 export default function IncidentsPage() {
-  const [incidents, setIncidents] = useState(demoIncidents);
-  const [fileName, setFileName] = useState('');
-  const [message, setMessage] = useState('');
-  const [query, setQuery] = useState('');
-
-  const filteredIncidents = useMemo(() => incidents.filter((incident) =>
-    `${incident.id} ${incident.type} ${incident.carrier} ${incident.status}`.toLowerCase().includes(query.toLowerCase()),
-  ), [incidents, query]);
-
-  function handleFile(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onerror = () => {
-      setMessage('No se pudo leer el archivo. Selecciona otro CSV e inténtalo de nuevo.');
-    };
-    reader.onload = () => {
-      try {
-        const imported = parseCsv(String(reader.result ?? ''));
-        if (imported.length === 0) {
-          setMessage('El archivo no contiene filas de incidencias válidas. Selecciona otro CSV.');
-          return;
-        }
-        setIncidents(imported);
-        setMessage(`${imported.length} incidencias cargadas correctamente.`);
-      } catch {
-        setMessage('No se pudo interpretar el CSV. Revisa el formato e inténtalo de nuevo.');
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  return (
-    <div className="incident-page">
-      <header className="incident-header">
-        <div>
-          <p className="eyebrow">TrackFlow Ops · Control operativo</p>
-          <h1>Incidencias</h1>
-          <p>Centraliza los problemas de última milla, prioriza los casos urgentes y da seguimiento a cada resolución.</p>
-        </div>
-        <Link className="back-link" href="/ops">← Volver al panel</Link>
-      </header>
-
-      <section className="upload-panel" aria-labelledby="upload-title">
-        <h2 id="upload-title">Importar incidencias</h2>
-        <p>Sube un CSV para sustituir la vista de demostración. Columnas esperadas: tipo, transportista, estado, prioridad y fecha.</p>
-        <label className="file-drop" htmlFor="incident-file">
-          <input id="incident-file" type="file" accept=".csv,text/csv" onChange={handleFile} />
-          {fileName ? <span className="file-name">{fileName}</span> : <span>Seleccionar archivo CSV</span>}
-        </label>
-        {message && <p className="incident-error" role="status">{message}</p>}
-      </section>
-
-      <section className="analysis-content" aria-labelledby="overview-title">
-        <div className="incident-kpis">
-          <div className="metric"><span>Total de incidencias</span><strong>{incidents.length}</strong></div>
-          <div className="metric warning"><span>Prioridad alta</span><strong>{incidents.filter((item) => item.priority === 'Alta').length}</strong></div>
-          <div className="metric"><span>En revisión</span><strong>{incidents.filter((item) => item.status === 'En revisión').length}</strong></div>
-          <div className="metric"><span>Resueltas</span><strong>{incidents.filter((item) => item.status === 'Resuelta').length}</strong></div>
-        </div>
-        <div className="analysis-card">
-          <div className="panel-heading"><h2 id="overview-title">Registro de incidencias</h2><label><span className="visually-hidden">Buscar incidencias</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar…" /></label></div>
-          <div className="supplier-table-wrap">
-            <table className="supplier-table"><caption className="visually-hidden">Listado de incidencias operativas</caption><thead><tr><th>ID</th><th>Incidencia</th><th>Transportista</th><th>Estado</th><th>Prioridad</th><th>Fecha</th></tr></thead><tbody>{filteredIncidents.map((incident) => <tr key={incident.id}><td><strong>{incident.id}</strong></td><td>{incident.type}</td><td>{incident.carrier}</td><td><span className={`supplier-status ${incident.status === 'Resuelta' ? 'active' : 'suspended'}`}>{incident.status}</span></td><td>{incident.priority}</td><td>{incident.date}</td></tr>)}</tbody></table>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  const [incidents, setIncidents] = useState<Incident[]>([]); const [summary, setSummary] = useState<Summary | null>(null); const [status, setStatus] = useState(''); const [origin, setOrigin] = useState(''); const [branch, setBranch] = useState(''); const [category, setCategory] = useState(''); const [loading, setLoading] = useState(true); const [error, setError] = useState(''); const [updating, setUpdating] = useState<number | null>(null);
+  const query = useMemo(() => new URLSearchParams(Object.entries({ status, origin, branch, category }).filter(([, value]) => value)), [status, origin, branch, category]);
+  const load = useCallback(async () => { setLoading(true); setError(''); try { const [listResponse, summaryResponse] = await Promise.all([fetch(`/api/incidents?${query}`), fetch('/api/incidents/summary')]); if (!listResponse.ok || !summaryResponse.ok) throw new Error('No se pudieron cargar las incidencias.'); setIncidents(await listResponse.json()); setSummary(await summaryResponse.json()); } catch (loadError) { setError(loadError instanceof Error ? loadError.message : 'Error de conexión.'); } finally { setLoading(false); } }, [query]);
+  useEffect(() => { const timer = window.setTimeout(() => { void load(); }, 0); return () => window.clearTimeout(timer); }, [load]);
+  async function changeStatus(incident: Incident, next: Incident['status']) { const previous = incidents; setUpdating(incident.id); setIncidents(previous.map(item => item.id === incident.id ? { ...item, status: next } : item)); try { const response = await fetch(`/api/incidents/${incident.id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: next }) }); if (!response.ok) throw new Error('Transición no permitida.'); setSummary(await (await fetch('/api/incidents/summary')).json()); } catch (statusError) { setIncidents(previous); setError(statusError instanceof Error ? statusError.message : 'No se pudo actualizar el estado.'); } finally { setUpdating(null); } }
+  return <main className="incident-page"><header className="incident-header"><div><p className="eyebrow">TrackFlow Ops · Control operativo</p><h1>Incidencias</h1><p>Centraliza y da seguimiento a cada problema operativo.</p></div><div><Link className="back-link" href="/ops">← Volver al panel</Link><Link className="back-link" href="/incidents/new">Registrar incidencia</Link></div></header>{summary && <section className="incident-kpis">{Object.entries(summary.by_status).map(([key, value]) => <div className="metric" key={key}><span>{labels[key] ?? key}</span><strong>{value}</strong></div>)}</section>}<section className="analysis-card"><div className="panel-heading"><h2>Registro de incidencias</h2><div className="incident-filters"><select aria-label="Filtrar estado" value={status} onChange={e => setStatus(e.target.value)}><option value="">Todos los estados</option>{['open', 'in_progress', 'resolved', 'discarded'].map(key => <option key={key} value={key}>{labels[key]}</option>)}</select><select aria-label="Filtrar origen" value={origin} onChange={e => setOrigin(e.target.value)}><option value="">Todos los orígenes</option>{['customer', 'branch', 'internal'].map(key => <option key={key} value={key}>{labels[key]}</option>)}</select><select aria-label="Filtrar categoría" value={category} onChange={e => setCategory(e.target.value)}><option value="">Todas las categorías</option>{categories.map(key => <option key={key}>{key}</option>)}</select><select aria-label="Filtrar sede" value={branch} onChange={e => setBranch(e.target.value)}><option value="">Todas las sedes</option>{['central', 'la_warehouse', 'la_office', 'zaragoza_warehouse', 'zaragoza_office'].map(key => <option key={key}>{key}</option>)}</select></div></div>{error && <div className="incident-error" role="alert">{error} <button onClick={() => void load()}>Reintentar</button></div>}{loading ? <p>Cargando incidencias…</p> : incidents.length === 0 ? <p>No hay incidencias para estos filtros.</p> : <div className="supplier-table-wrap"><table className="supplier-table"><thead><tr><th>ID</th><th>Título</th><th>Categoría</th><th>Origen / sede</th><th>Estado</th><th>Fecha</th></tr></thead><tbody>{incidents.map(incident => <tr key={incident.id}><td>{incident.id}</td><td><strong>{incident.title}</strong><br /><small>{incident.description}</small></td><td>{incident.category}</td><td>{labels[incident.origin]} / {labels[incident.branch]}</td><td><select disabled={updating === incident.id || ['resolved', 'discarded'].includes(incident.status)} value={incident.status} onChange={e => void changeStatus(incident, e.target.value as Incident['status'])}>{['open', 'in_progress', 'resolved', 'discarded'].map(key => <option key={key}>{key}</option>)}</select></td><td>{new Date(incident.created_at).toLocaleDateString()}</td></tr>)}</tbody></table></div>}</section></main>;
 }

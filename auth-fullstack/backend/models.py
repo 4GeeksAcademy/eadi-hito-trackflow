@@ -130,6 +130,64 @@ class ChangePasswordRequest(BaseModel):
     new_password: str = Field(min_length=8)
 
 
+class IncidentStatus(str, Enum):
+    OPEN = "open"
+    IN_PROGRESS = "in_progress"
+    RESOLVED = "resolved"
+    DISCARDED = "discarded"
+
+
+class IncidentOrigin(str, Enum):
+    CUSTOMER = "customer"
+    BRANCH = "branch"
+    INTERNAL = "internal"
+
+
+class IncidentBranch(str, Enum):
+    CENTRAL = "central"
+    LA_WAREHOUSE = "la_warehouse"
+    LA_OFFICE = "la_office"
+    ZARAGOZA_WAREHOUSE = "zaragoza_warehouse"
+    ZARAGOZA_OFFICE = "zaragoza_office"
+
+
+class IncidentCategory(str, Enum):
+    LOST_PARCEL = "lost_parcel"
+    DELIVERY_FAILURE = "delivery_failure"
+    INVENTORY_DISCREPANCY = "inventory_discrepancy"
+    CARRIER_ISSUE = "carrier_issue"
+    RETURNS_ISSUE = "returns_issue"
+    WAREHOUSE_INCIDENT = "warehouse_incident"
+    SYSTEM_FAILURE = "system_failure"
+    CLIENT_COMPLAINT = "client_complaint"
+    OTHER = "other"
+
+
+class IncidentCreate(BaseModel):
+    title: str = Field(min_length=1, max_length=120)
+    description: str = Field(min_length=1)
+    category: IncidentCategory
+    status: IncidentStatus = IncidentStatus.OPEN
+    origin: IncidentOrigin
+    branch: IncidentBranch
+
+
+class IncidentUpdateStatus(BaseModel):
+    status: IncidentStatus
+
+
+class Incident(BaseModel):
+    id: int
+    title: str
+    description: str
+    category: IncidentCategory
+    status: IncidentStatus
+    origin: IncidentOrigin
+    branch: IncidentBranch
+    created_at: datetime
+    updated_at: datetime
+
+
 class SupplierCreate(SupplierBase):
     pass
 
