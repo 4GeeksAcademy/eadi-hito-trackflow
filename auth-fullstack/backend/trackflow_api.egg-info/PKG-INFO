@@ -13,3 +13,5 @@ Requires-Dist: passlib[bcrypt]<2,>=1.7.1
 Requires-Dist: bcrypt<6.0,>=4.0
 Requires-Dist: python-dotenv<2,>=1.0
 Requires-Dist: resend<3,>=2.45
+Requires-Dist: sqlmodel>=0.0.47
+Requires-Dist: psycopg2-binary>=2.9.13

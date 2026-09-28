@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from typing import Any
+from uuid import uuid4
 
 import bcrypt
 from tinydb import Query
@@ -11,7 +12,11 @@ from models import Profile, User, UserCreate, UserRole, UserUpdate
 
 
 def _user_from_record(record: dict[str, Any]) -> User:
-    return User.model_validate({**record, "id": record.doc_id})
+    user_uuid = record.get("user_uuid") or str(uuid4())
+    if not record.get("user_uuid"):
+        with get_db() as db:
+            db.table("users").update({"user_uuid": user_uuid}, doc_ids=[record.doc_id])
+    return User.model_validate({**record, "id": record.doc_id, "user_uuid": user_uuid})
 
 
 def _profile_from_record(record: dict[str, Any]) -> Profile:
@@ -50,6 +55,7 @@ def create_user(payload: UserCreate) -> User:
     now = datetime.now(timezone.utc).isoformat()
     user_record = {
         "email": str(payload.email).lower(),
+        "user_uuid": str(uuid4()),
         "hashed_password": _hash_password(payload.password),
         "is_active": True,
         "role": UserRole.USER.value,

@@ -1,4 +1,7 @@
 database
+inventory_models
+inventory_seed
 models
+schemas
 seed
 seed_data

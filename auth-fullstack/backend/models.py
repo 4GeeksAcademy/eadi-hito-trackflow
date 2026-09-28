@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from enum import Enum
 from typing import Annotated
+from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
@@ -66,6 +67,7 @@ class UserRole(str, Enum):
 
 class User(BaseModel):
     id: int
+    user_uuid: str = Field(default_factory=lambda: str(uuid4()))
     email: EmailStr
     hashed_password: str
     is_active: bool = True
