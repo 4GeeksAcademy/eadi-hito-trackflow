@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
+
 try:
     from fastapi import FastAPI, Request
     from fastapi.exceptions import RequestValidationError
     from fastapi.responses import JSONResponse
     from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.encoders import jsonable_encoder
 except ImportError as error:  # pragma: no cover - gives a useful local setup error
     raise RuntimeError("Instala backend/requirements.txt para iniciar la API.") from error
 
@@ -15,13 +18,21 @@ from routes.profiles import router as profiles_router
 from routes.suppliers import router as suppliers_router
 from routes.users import router as users_router
 from routes.incidents import router as incidents_router
+from routes.inventory import router as inventory_router
+from database import initialize_inventory_schema
 
-app = FastAPI(title="TrackFlow Operational API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    initialize_inventory_schema()
+    yield
+
+
+app = FastAPI(title="TrackFlow Operational API", version="1.0.0", lifespan=lifespan)
 
 
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(status_code=400, content={"detail": exc.errors()})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": exc.errors()}))
 
 
 @app.exception_handler(Exception)
@@ -33,6 +44,7 @@ app.include_router(users_router)
 app.include_router(incidents_router)
 app.include_router(suppliers_router)
 app.include_router(suppliers_router, prefix="/api")
+app.include_router(inventory_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],

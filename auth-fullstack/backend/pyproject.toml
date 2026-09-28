@@ -14,6 +14,8 @@ dependencies = [
   "bcrypt>=4.0,<6.0",
   "python-dotenv>=1.0,<2",
   "resend>=2.45,<3",
+  "sqlmodel>=0.0.47",
+  "psycopg2-binary>=2.9.13",
 ]
 
 [project.scripts]
@@ -31,7 +33,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["database", "models", "seed", "seed_data"]
+py-modules = ["database", "models", "inventory_models", "schemas", "seed", "seed_data", "inventory_seed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
