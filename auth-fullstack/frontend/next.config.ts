@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
 				source: '/api/incidents/:path*',
 				destination: 'http://127.0.0.1:8000/api/incidents/:path*',
 			},
+			{
+				source: '/api/inventory/:path*',
+				destination: 'http://127.0.0.1:8000/inventory/:path*',
+			},
 		];
 	},
 };
