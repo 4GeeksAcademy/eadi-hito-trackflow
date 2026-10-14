@@ -1,0 +1,44 @@
+services:
+  interfaces:
+    build:
+      context: .
+      dockerfile: auth-fullstack/frontend/Dockerfile
+    env_file:
+      - path: docker.env.example
+        required: true
+      - path: .env
+        required: false
+    ports:
+      - "${FRONTEND_PORT:-3002}:3000"
+      - "${INCIDENT_MANAGER_PORT:-3003}:3001"
+    volumes:
+      - ./auth-fullstack/frontend:/workspace/auth-fullstack/frontend
+      - /workspace/auth-fullstack/frontend/node_modules
+      - /workspace/auth-fullstack/frontend/.next
+      - ./uis/incident-manager:/workspace/uis/incident-manager
+      - /workspace/uis/incident-manager/node_modules
+      - /workspace/uis/incident-manager/.next
+    depends_on:
+      - backend
+    networks:
+      - trackflow-network
+
+  backend:
+    build:
+      context: ./auth-fullstack/backend
+    env_file:
+      - path: docker.env.example
+        required: true
+      - path: .env
+        required: false
+    ports:
+      - "${BACKEND_PORT:-8001}:8000"
+    volumes:
+      - ./auth-fullstack/backend:/app
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - trackflow-network
+
+networks:
+  trackflow-network:
+    name: trackflow-network
