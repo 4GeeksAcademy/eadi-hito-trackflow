@@ -5,6 +5,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from auth_dependencies import get_current_user
+from cache import response_cache
 from database import get_db
 from models import (
     Country,
@@ -12,9 +13,11 @@ from models import (
     SupplierCreate,
     SupplierUpdateRate,
     SupplierUpdateStatus,
+    User,
 )
 
 router = APIRouter(prefix="/suppliers", tags=["suppliers"])
+CACHE_KEY_PREFIX = ("suppliers",)
 
 
 def _to_supplier(record: dict[str, Any]) -> Supplier:
@@ -29,15 +32,12 @@ def _find_supplier(db: Any, supplier_id: int) -> dict[str, Any] | None:
 def create_supplier(payload: SupplierCreate) -> Supplier:
     with get_db() as db:
         supplier_id = db.insert({**payload.model_dump(mode="json"), "updated_at": datetime.now(timezone.utc).isoformat()})
-        return _to_supplier(db.get(doc_id=supplier_id))
+        supplier = _to_supplier(db.get(doc_id=supplier_id))
+    response_cache.invalidate_prefix(CACHE_KEY_PREFIX)
+    return supplier
 
 
-@router.get("", response_model=list[Supplier])
-def list_suppliers(
-    country: Country | None = Query(default=None),
-    category: str | None = Query(default=None),
-    current_user=Depends(get_current_user),
-) -> list[Supplier]:
+def _list_suppliers(country: Country | None, category: str | None) -> list[Supplier]:
     with get_db() as db:
         records = db.all()
     if country is not None:
@@ -45,6 +45,22 @@ def list_suppliers(
     if category is not None:
         records = [record for record in records if category in record["categories"]]
     return [_to_supplier(record) for record in records]
+
+
+@router.get("", response_model=list[Supplier])
+def list_suppliers(
+    country: Country | None = Query(default=None),
+    category: str | None = Query(default=None),
+    current_user: User = Depends(get_current_user),
+) -> list[Supplier]:
+    key = (
+        *CACHE_KEY_PREFIX,
+        "list",
+        current_user.id,
+        country.value if country is not None else None,
+        category,
+    )
+    return response_cache.get_or_set(key, lambda: _list_suppliers(country, category))
 
 
 @router.get("/{supplier_id}", response_model=Supplier)
@@ -63,7 +79,9 @@ def update_supplier_rate(supplier_id: int, payload: SupplierUpdateRate, current_
         if record is None:
             raise HTTPException(status_code=404, detail="Proveedor no encontrado.")
         db.update({"rate_per_shipment": payload.rate_per_shipment, "updated_at": datetime.now(timezone.utc).isoformat()}, doc_ids=[supplier_id])
-        return _to_supplier(db.get(doc_id=supplier_id))
+        supplier = _to_supplier(db.get(doc_id=supplier_id))
+    response_cache.invalidate_prefix(CACHE_KEY_PREFIX)
+    return supplier
 
 
 @router.patch("/{supplier_id}/status", response_model=Supplier)
@@ -73,7 +91,9 @@ def update_supplier_status(supplier_id: int, payload: SupplierUpdateStatus, curr
         if record is None:
             raise HTTPException(status_code=404, detail="Proveedor no encontrado.")
         db.update({"status": payload.status.value}, doc_ids=[supplier_id])
-        return _to_supplier(db.get(doc_id=supplier_id))
+        supplier = _to_supplier(db.get(doc_id=supplier_id))
+    response_cache.invalidate_prefix(CACHE_KEY_PREFIX)
+    return supplier
 
 
 @router.delete("/{supplier_id}", response_model=None, status_code=status.HTTP_204_NO_CONTENT)
@@ -82,3 +102,4 @@ def delete_supplier(supplier_id: int, current_user=Depends(get_current_user)) ->
         if _find_supplier(db, supplier_id) is None:
             raise HTTPException(status_code=404, detail="Proveedor no encontrado.")
         db.remove(doc_ids=[supplier_id])
+    response_cache.invalidate_prefix(CACHE_KEY_PREFIX)
