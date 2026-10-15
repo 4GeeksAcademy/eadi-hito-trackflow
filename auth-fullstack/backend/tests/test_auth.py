@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from fastapi import HTTPException
+from fastapi.testclient import TestClient
 from jose import jwt
 
 from auth_dependencies import create_access_token, get_current_user
@@ -11,6 +12,9 @@ from auth_service import create_user, delete_user, get_profile_by_user_id, get_u
 from models import ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, UserCreate, UserUpdate
 from password_reset_service import consume_reset_token, issue_reset_token, validate_reset_token
 from routes.auth import auth_me, change_password, forgot_password, login, reset_password
+from main import app
+
+client = TestClient(app)
 
 
 @pytest.fixture
@@ -76,7 +80,7 @@ def test_forgot_password_is_generic_for_unknown_email(monkeypatch):
     sent = []
     monkeypatch.setattr("routes.auth.send_reset_for_email", lambda email: sent.append(email))
     response = forgot_password(ForgotPasswordRequest(email="unknown@example.com"))
-    assert "recibirás" in response["message"]
+    assert "recibirás" in response.message
     assert sent == ["unknown@example.com"]
 
 
@@ -90,7 +94,7 @@ def test_forgot_password_sends_reset_for_existing_email(user, monkeypatch):
 def test_reset_password_updates_password_and_consumes_token(user, monkeypatch):
     token = issue_reset_token(user.id)
     response = reset_password(ResetPasswordRequest(token=token, new_password="NuevaClave123"))
-    assert response["message"] == "Contraseña restablecida correctamente."
+    assert response.message == "Contraseña restablecida correctamente."
     updated = get_user_by_email("person@example.com")
     assert verify_password("NuevaClave123", updated)
     monkeypatch.setattr("routes.auth.update_password", lambda *_args: updated)
@@ -119,8 +123,40 @@ def test_change_password_updates_password(user):
         ChangePasswordRequest(current_password="Correcta123", new_password="NuevaClave123"),
         user,
     )
-    assert response["message"] == "Contraseña actualizada correctamente."
+    assert response.message == "Contraseña actualizada correctamente."
     assert verify_password("NuevaClave123", get_user_by_email("person@example.com"))
+
+
+def test_auth_http_responses_exclude_email_and_credentials(monkeypatch):
+    monkeypatch.setattr("routes.auth.send_reset_for_email", lambda _email: None)
+    registration = client.post(
+        "/users",
+        json={"email": "private@example.com", "password": "Correcta123", "name": "Persona"},
+    )
+    assert registration.status_code == 201
+    assert registration.json() == {"message": "Usuario creado correctamente."}
+
+    login_response = client.post(
+        "/auth/login",
+        json={"email": "private@example.com", "password": "Correcta123"},
+    )
+    assert login_response.status_code == 200
+    assert "access_token" in login_response.json()
+    assert "email" not in login_response.json()
+    assert "hashed_password" not in login_response.json()
+
+    forgot_response = client.post("/auth/forgot-password", json={"email": "private@example.com"})
+    assert forgot_response.status_code == 200
+    assert "email" not in forgot_response.json()
+
+    user = get_user_by_email("private@example.com")
+    reset_response = client.post(
+        "/auth/reset-password",
+        json={"token": issue_reset_token(user.id), "new_password": "NuevaClave123"},
+    )
+    assert reset_response.status_code == 200
+    assert "email" not in reset_response.json()
+    assert "token" not in reset_response.json()
 
 
 def test_reset_token_cannot_be_consumed_twice(user):

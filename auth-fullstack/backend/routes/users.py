@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from auth_dependencies import get_current_user
 from auth_service import create_user, delete_user, get_user_by_id, user_response, update_user
-from models import User, UserCreate, UserResponse, UserRole, UserUpdate
+from models import User, UserCreate, UserRegistrationResponse, UserResponse, UserRole, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -18,13 +18,13 @@ def _ensure_self_or_admin(target_id: int, current_user: User) -> None:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No puedes acceder a otro usuario.")
 
 
-@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def register_user(payload: UserCreate) -> UserResponse:
+@router.post("", response_model=UserRegistrationResponse, status_code=status.HTTP_201_CREATED)
+def register_user(payload: UserCreate) -> UserRegistrationResponse:
     try:
         user = create_user(payload)
     except ValueError as error:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un usuario con ese email.") from error
-    return UserResponse(**user_response(user))
+    return UserRegistrationResponse(message="Usuario creado correctamente.")
 
 
 @router.get("", response_model=list[UserResponse])
@@ -61,7 +61,7 @@ def update_user_endpoint(user_id: int, payload: UserUpdate, current_user: User =
     return UserResponse(**user_response(user))
 
 
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{user_id}", response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 def delete_user_endpoint(user_id: int, current_user: User = Depends(get_current_user)) -> None:
     _ensure_self_or_admin(user_id, current_user)
     if not delete_user(user_id):

@@ -8,6 +8,11 @@ services:
         required: true
       - path: .env
         required: false
+    environment:
+      CODESPACES: ${CODESPACES:-}
+      BACKEND_HOST_PORT: ${BACKEND_PORT:-8001}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${FRONTEND_PORT:-3002}:3000"
       - "${INCIDENT_MANAGER_PORT:-3003}:3001"

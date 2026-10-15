@@ -81,6 +81,12 @@ class UserResponse(BaseModel):
     role: UserRole
     created_at: datetime
 
+class UserRegistrationResponse(BaseModel):
+    message: str
+
+class MessageResponse(BaseModel):
+    message: str
+
 class Profile(BaseModel):
     id: int
     user_id: int
@@ -188,6 +194,12 @@ class Incident(BaseModel):
     branch: IncidentBranch
     created_at: datetime
     updated_at: datetime
+
+class IncidentSummary(BaseModel):
+    by_status: dict[IncidentStatus, int]
+    by_category: dict[IncidentCategory, int]
+    by_origin: dict[IncidentOrigin, int]
+    by_branch: dict[IncidentBranch, int]
 
 
 class SupplierCreate(SupplierBase):
