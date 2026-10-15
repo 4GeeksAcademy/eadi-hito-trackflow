@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next';
 
-const backendUrl = (process.env.BACKEND_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
+const backendUrl =
+	process.env.CODESPACES === 'true'
+		? `http://host.docker.internal:${process.env.BACKEND_HOST_PORT ?? '8001'}`
+		: (process.env.BACKEND_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,

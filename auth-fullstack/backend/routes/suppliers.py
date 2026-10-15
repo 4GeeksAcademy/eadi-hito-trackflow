@@ -76,7 +76,7 @@ def update_supplier_status(supplier_id: int, payload: SupplierUpdateStatus, curr
         return _to_supplier(db.get(doc_id=supplier_id))
 
 
-@router.delete("/{supplier_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{supplier_id}", response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 def delete_supplier(supplier_id: int, current_user=Depends(get_current_user)) -> None:
     with get_db() as db:
         if _find_supplier(db, supplier_id) is None:

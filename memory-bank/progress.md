@@ -10,7 +10,7 @@
 - `auth/` contiene tipos y modelos compartidos (Python + TypeScript).
 - `uis/backoffice/` y `services/api/` están obsoletos; se mantienen temporalmente para referencia.
 - La estructura base del proyecto se reorganizó de `services/api/` + `uis/backoffice/` a `backend/` + `frontend/` + `auth/`.
-- Se añadió un stack Docker local para `auth-fullstack/frontend`, `uis/incident-manager` y `auth-fullstack/backend`; las imágenes construyen y los tres servicios responden en HTTP. En este dev container, el daemon bloquea conexiones entre contenedores aunque comparten red, por lo que fallan los proxies de API. El despliegue al VPS sigue pendiente.
+- Se añadió un stack Docker local para `auth-fullstack/frontend`, `uis/incident-manager` y `auth-fullstack/backend`. En Codespaces, el bridge permite alcanzar el gateway del host pero no conexiones directas entre contenedores; las interfaces usan `host.docker.internal:8001` allí, y mantienen `backend:8000` para Docker normal/VPS. Ambos proxies llegan a FastAPI (responden 401 sin sesión); aún queda validar el networking nativo por nombre de servicio y desplegar al VPS.
 - El backend `backend/` funciona correctamente con:
   - ✅ Login (JWT)
   - ✅ Forgot-password (envío de email vía Resend)

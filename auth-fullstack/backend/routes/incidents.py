@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query, status
 
 from incident_service import create_incident, get_incident, incident_summary, list_incidents, update_incident_status
-from models import Incident, IncidentBranch, IncidentCategory, IncidentCreate, IncidentOrigin, IncidentStatus, IncidentUpdateStatus
+from models import Incident, IncidentBranch, IncidentCategory, IncidentCreate, IncidentOrigin, IncidentStatus, IncidentSummary, IncidentUpdateStatus
 
 router = APIRouter(prefix="/api/incidents", tags=["incidents"])
 
@@ -23,9 +23,9 @@ def list_all(
     return list_incidents({"status": status_filter.value if status_filter else None, "origin": origin.value if origin else None, "branch": branch.value if branch else None, "category": category.value if category else None})
 
 
-@router.get("/summary")
-def summary() -> dict[str, dict[str, int]]:
-    return incident_summary()
+@router.get("/summary", response_model=IncidentSummary)
+def summary() -> IncidentSummary:
+    return IncidentSummary.model_validate(incident_summary())
 
 
 @router.get("/{incident_id}", response_model=Incident)
