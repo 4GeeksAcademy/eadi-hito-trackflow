@@ -1,14 +1,13 @@
 from fastapi.testclient import TestClient
 
 from main import app
-from database import get_db
+from incident_service import clear_incidents
 
 client = TestClient(app)
 
 
 def setup_function() -> None:
-    with get_db() as db:
-        db.table("incidents").truncate()
+    clear_incidents()
 
 
 def payload(**overrides: object) -> dict[str, object]:
@@ -37,6 +36,19 @@ def test_missing_detail_and_empty_summary() -> None:
     summary = client.get("/api/incidents/summary").json()
     assert summary["by_status"]["open"] == 0
     assert summary["by_branch"]["central"] == 0
+
+
+def test_summary_cache_is_invalidated_after_incident_writes() -> None:
+    assert client.get("/api/incidents/summary").json()["by_status"]["open"] == 0
+    created = client.post("/api/incidents", json=payload())
+    assert created.status_code == 201
+    assert client.get("/api/incidents/summary").json()["by_status"]["open"] == 1
+
+    updated = client.patch(f"/api/incidents/{created.json()['id']}/status", json={"status": "in_progress"})
+    assert updated.status_code == 200
+    summary = client.get("/api/incidents/summary").json()
+    assert summary["by_status"]["open"] == 0
+    assert summary["by_status"]["in_progress"] == 1
 
 
 def test_invalid_payload_is_rejected() -> None:

@@ -1,11 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Candidate, CandidateStage, CandidateStatus } from '../types/candidate';
 import { createCandidate, getRecords } from '../lib/api';
-import CandidateForm from './CandidateForm';
+
+const CandidateForm = dynamic(() => import('./CandidateForm'), {
+  loading: () => <p role="status" className="text-sm text-slate-600">Cargando formulario…</p>,
+});
 
 const statusOptions: Array<'all' | CandidateStatus> = ['all', 'New', 'Reviewing', 'Interviewing', 'Offer', 'Hired', 'Rejected'];
 const stageOptions: Array<'all' | CandidateStage> = ['all', 'Application', 'Screening', 'Interview', 'Final Round', 'Offer', 'Hired'];

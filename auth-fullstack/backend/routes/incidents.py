@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query, status
 
+from cache import response_cache
 from incident_service import create_incident, get_incident, incident_summary, list_incidents, update_incident_status
 from models import Incident, IncidentBranch, IncidentCategory, IncidentCreate, IncidentOrigin, IncidentStatus, IncidentSummary, IncidentUpdateStatus
 
@@ -25,7 +26,10 @@ def list_all(
 
 @router.get("/summary", response_model=IncidentSummary)
 def summary() -> IncidentSummary:
-    return IncidentSummary.model_validate(incident_summary())
+    return response_cache.get_or_set(
+        ("incidents", "summary"),
+        lambda: IncidentSummary.model_validate(incident_summary()),
+    )
 
 
 @router.get("/{incident_id}", response_model=Incident)

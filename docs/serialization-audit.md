@@ -1,6 +1,6 @@
 # Auditoría de serialización FastAPI
 
-Fecha: 2026-10-15  
+Fecha: 2026-10-14  
 Aplicación auditada: `auth-fullstack/backend/main.py` (servicio `backend` de `docker-compose.yml`).  
 Alcance: rutas de negocio montadas por la aplicación. Las rutas de documentación generadas por FastAPI (`/docs`, `/redoc`, `/openapi.json` y `/docs/oauth2-redirect`) se excluyen porque son infraestructura de documentación, no endpoints de negocio.
 
