@@ -10,6 +10,7 @@
 - `auth/` contiene tipos y modelos compartidos (Python + TypeScript).
 - `uis/backoffice/` y `services/api/` están obsoletos; se mantienen temporalmente para referencia.
 - La estructura base del proyecto se reorganizó de `services/api/` + `uis/backoffice/` a `backend/` + `frontend/` + `auth/`.
+- Se añadió un stack Docker local para `auth-fullstack/frontend`, `uis/incident-manager` y `auth-fullstack/backend`; las imágenes construyen y los tres servicios responden en HTTP. En este dev container, el daemon bloquea conexiones entre contenedores aunque comparten red, por lo que fallan los proxies de API. El despliegue al VPS sigue pendiente.
 - El backend `backend/` funciona correctamente con:
   - ✅ Login (JWT)
   - ✅ Forgot-password (envío de email vía Resend)
@@ -30,3 +31,4 @@
 8. Conectar el directorio de proveedores a autenticación y permisos antes de usarlo con datos operativos reales.
 9. Rotar la clave JWT y configurar permisos de producción antes del despliegue.
 10. Configurar una clave Resend real y verificar el envío de un email de recuperación.
+11. Verificar conectividad entre servicios con networking bridge operativo y desplegar el stack en el VPS.
