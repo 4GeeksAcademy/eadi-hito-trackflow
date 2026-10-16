@@ -1,6 +1,5 @@
-'use client';
-
 import Link from 'next/link';
+import KpiCard from '../../components/KpiCard';
 
 const carriers = [
   { name: 'SEUR', country: 'España · 1.240 envíos', rate: '96,4%', color: '#2f8b6a' },
@@ -73,28 +72,10 @@ export default function BackofficeHome() {
             </div>
           </header>
           <section className="kpi-grid" aria-label="Indicadores principales">
-            <div className="kpi">
-              <div className="kpi-label">Pedidos hoy</div>
-              <div className="kpi-value">2.840</div>
-              <div className="kpi-note">↑ 12,8% vs. ayer</div>
-            </div>
-            <div className="kpi">
-              <div className="kpi-label">Entregas a tiempo</div>
-              <div className="kpi-value">94,6%</div>
-              <div className="kpi-note">↑ 1,2 pts esta semana</div>
-            </div>
-            <div className="kpi">
-              <div className="kpi-label">Stock bajo</div>
-              <div className="kpi-value">
-                18 <small>SKUs</small>
-              </div>
-              <div className="kpi-note alert">5 requieren atención</div>
-            </div>
-            <div className="kpi">
-              <div className="kpi-label">Devoluciones</div>
-              <div className="kpi-value">21,3%</div>
-              <div className="kpi-note info">Dentro del rango 18–25%</div>
-            </div>
+            <KpiCard label="Pedidos hoy" value="2.840" note="↑ 12,8% vs. ayer" />
+            <KpiCard label="Entregas a tiempo" value="94,6%" note="↑ 1,2 pts esta semana" />
+            <KpiCard label="Stock bajo" value={<>18 <small>SKUs</small></>} note="5 requieren atención" noteVariant="alert" />
+            <KpiCard label="Devoluciones" value="21,3%" note="Dentro del rango 18–25%" noteVariant="info" />
           </section>
           <div className="content-grid">
             <section className="panel" id="inventario">

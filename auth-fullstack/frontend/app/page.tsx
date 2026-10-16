@@ -40,7 +40,7 @@ export default function HomePage() {
   return <main className="page-shell">
     <header className="container" style={{ paddingTop: 26 }}>
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 20 }} aria-label="Navegación principal">
-        <a href="#inicio" style={{ fontFamily: 'Space Grotesk', fontSize: '1.45rem', fontWeight: 700 }}>Track<span style={{ color: 'var(--coral)' }}>Flow</span></a>
+        <a href="#inicio" style={{ fontFamily: 'var(--font-space-grotesk)', fontSize: '1.45rem', fontWeight: 700 }}>Track<span style={{ color: 'var(--coral)' }}>Flow</span></a>
         <div style={{ display: 'flex', gap: 22, alignItems: 'center' }}><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><Link className="nav-link" href="/candidates">Talento</Link><Link className="nav-link" href="/ops">Panel Ops</Link><Link className="nav-link" href="/login">Acceder</Link><a className="button button-primary" href="#contacto">Solicitar información</a></div>
       </nav>
     </header>
