@@ -15,7 +15,10 @@ export default function ForgotPasswordPage() {
     setError('');
     try {
       const response = await fetch('/api/auth/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      if (!response.ok) throw new Error('request-failed');
+      if (!response.ok) {
+        setError(response.status === 503 ? 'El servicio de correo no está disponible. Contacta con el administrador.' : 'No se pudo enviar la solicitud. Inténtalo de nuevo.');
+        return;
+      }
       setSent(true);
     } catch {
       setError('No se pudo enviar la solicitud. Inténtalo de nuevo.');

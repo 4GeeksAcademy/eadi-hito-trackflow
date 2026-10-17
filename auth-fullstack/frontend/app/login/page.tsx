@@ -1,15 +1,37 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+
+function destination() {
+  const next = new URLSearchParams(window.location.search).get('next');
+  if (!next?.startsWith('/')) return '/ops';
+  try {
+    const target = new URL(next, window.location.origin);
+    return target.origin === window.location.origin ? target.pathname + target.search + target.hash : '/ops';
+  } catch {
+    return '/ops';
+  }
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('trackflow_access_token');
+    if (!token) return;
+    const controller = new AbortController();
+    fetch('/api/auth/session', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, signal: controller.signal })
+      .then(response => {
+        if (response.ok) window.location.replace(destination());
+        else if (response.status === 401) localStorage.removeItem('trackflow_access_token');
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,7 +49,7 @@ export default function LoginPage() {
         return;
       }
       localStorage.setItem('trackflow_access_token', data.access_token);
-      router.push('/');
+      window.location.replace(destination());
     } catch {
       setError('No se pudo conectar con el servicio. Inténtalo de nuevo.');
     } finally {

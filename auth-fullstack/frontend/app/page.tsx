@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const services = [
@@ -12,6 +12,21 @@ const services = [
 export default function HomePage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    function updateVisibility() {
+      setShowBackToTop(window.scrollY > 240);
+    }
+    updateVisibility();
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    return () => window.removeEventListener('scroll', updateVisibility);
+  }, []);
+
+  function scrollToTop() {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,10 +53,11 @@ export default function HomePage() {
   }
 
   return <main className="page-shell">
+    {showBackToTop && <button className="back-to-top" type="button" onClick={scrollToTop} aria-label="Volver al inicio de la página" title="Volver al inicio"><span aria-hidden="true">&#8593;</span></button>}
     <header className="container" style={{ paddingTop: 26 }}>
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 20 }} aria-label="Navegación principal">
         <a href="#inicio" style={{ fontFamily: 'var(--font-space-grotesk)', fontSize: '1.45rem', fontWeight: 700 }}>Track<span style={{ color: 'var(--coral)' }}>Flow</span></a>
-        <div style={{ display: 'flex', gap: 22, alignItems: 'center' }}><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><Link className="nav-link" href="/candidates">Talento</Link><Link className="nav-link" href="/ops">Panel Ops</Link><Link className="nav-link" href="/login">Acceder</Link><a className="button button-primary" href="#contacto">Solicitar información</a></div>
+        <div style={{ display: 'flex', gap: 22, alignItems: 'center' }}><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><Link className="nav-link" href="/login">Acceder</Link><a className="button button-primary" href="#contacto">Solicitar información</a></div>
       </nav>
     </header>
     <section className="container hero-grid" id="inicio">
@@ -52,6 +68,6 @@ export default function HomePage() {
     <section className="section coverage-band" id="cobertura"><div className="container"><div className="section-heading"><div><div className="eyebrow" style={{ color: 'var(--lime)' }}>Dos países. Una operación.</div><h2>Visibilidad donde tu cliente la necesita.</h2></div><p style={{ color: '#bfd0c6' }}>Una infraestructura binacional preparada para crecer con tus mercados.</p></div><div className="coverage-grid"><article className="coverage-card"><h3>Estados Unidos</h3><p>Almacén en Los Ángeles<br />Cobertura nacional<br />UPS · FedEx · DHL</p></article><article className="coverage-card"><h3>España</h3><p>Almacén en Zaragoza<br />Cobertura peninsular e islas<br />MRW · SEUR · DHL</p></article></div></div></section>
     <section className="section container"><div className="eyebrow">Por qué TrackFlow</div><div className="benefit-grid" style={{ marginTop: 32 }}><div className="benefit"><strong>Operación binacional</strong><span>Infraestructura propia en Estados Unidos y España.</span></div><div className="benefit"><strong>+130 profesionales</strong><span>Equipos que conocen tu operación de principio a fin.</span></div><div className="benefit"><strong>Tecnología propia</strong><span>Datos de inventario y entregas en una sola mirada.</span></div><div className="benefit"><strong>E-commerce nativo</strong><span>Moda, electrónica y cosmética son nuestro terreno.</span></div></div></section>
     <section className="section container" id="contacto"><div className="contact-panel"><div><div className="eyebrow">Hablemos</div><h2 style={{ fontSize: 'clamp(2.3rem, 5vw, 4rem)', lineHeight: 1, margin: '14px 0 20px' }}>Tu próxima entrega empieza aquí.</h2><p style={{ color: 'var(--muted)', lineHeight: 1.6 }}>Cuéntanos cómo funciona hoy tu logística y te mostraremos dónde puede llegar mañana.</p><p style={{ marginTop: 34, lineHeight: 1.8, fontSize: '.9rem' }}>comercial@trackflow.com<br />Los Ángeles: +1 213 555 0147<br />Zaragoza: +34 976 123 456</p></div>{submitted ? <div className="success"><strong>¡Gracias por tu interés en TrackFlow!</strong><p>Hemos recibido tu solicitud. Nuestro equipo comercial te contactará en las próximas 24-48 horas.</p><p>comercial@trackflow.com</p></div> : <form onSubmit={handleSubmit} noValidate><div className="form-grid"><div className="field"><label htmlFor="company">Empresa *</label><input id="company" name="company" required /></div><div className="field"><label htmlFor="contact">Persona de contacto *</label><input id="contact" name="contact" required /></div><div className="field"><label htmlFor="email">Email corporativo *</label><input id="email" name="email" type="email" required /></div><div className="field"><label htmlFor="phone">Teléfono *</label><input id="phone" name="phone" placeholder="+34 600 000 000" required /></div><div className="field"><label htmlFor="country">País de operación *</label><select id="country" name="country" defaultValue=""><option value="">Selecciona una opción</option><option>Estados Unidos</option><option>España</option><option>Ambos</option><option>Otro</option></select></div><div className="field"><label htmlFor="product">Tipo de producto *</label><select id="product" name="product" defaultValue=""><option value="">Selecciona una opción</option><option>Moda</option><option>Electrónica</option><option>Cosmética</option><option>Alimentación</option><option>Otro</option></select></div><div className="field"><label htmlFor="volume">Envíos mensuales *</label><select id="volume" name="volume" defaultValue=""><option value="">Selecciona una opción</option><option>0-100</option><option>101-500</option><option>501-2000</option><option>2000+</option><option>No estoy seguro</option></select></div><div className="field"><label htmlFor="website">Sitio web</label><input id="website" name="website" type="url" placeholder="https://" /></div><div className="field full"><span style={{ fontSize: '.8rem', fontWeight: 700 }}>Servicios de interés *</span><div className="checks">{['Almacenaje', 'Última milla', 'Logística inversa'].map((service) => <label className="check" key={service}><input type="checkbox" name="services" value={service} />{service}</label>)}</div></div><div className="field full"><label className="check"><input type="checkbox" name="privacy" required /> Acepto la política de privacidad *</label></div></div>{error && <p className="form-message error" role="alert">{error}</p>}<button className="button button-primary" type="submit" style={{ marginTop: 20 }}>Solicitar información ↗</button></form>}</div></section>
-    <footer className="site-footer"><div className="container footer-row"><span>© 2025 TrackFlow. Todos los derechos reservados.</span><span style={{ display: 'flex', gap: 18 }}><Link href="/ops">Panel de operaciones</Link><Link href="/candidates">Talento</Link><Link href="/login">Acceder</Link></span></div></footer>
+    <footer className="site-footer"><div className="container footer-row"><span>© 2025 TrackFlow. Todos los derechos reservados.</span><span style={{ display: 'flex', gap: 18 }}><Link href="/login">Acceder</Link></span></div></footer>
   </main>;
 }

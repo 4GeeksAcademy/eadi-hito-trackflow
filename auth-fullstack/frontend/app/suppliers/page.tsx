@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { OpsSectionShell } from '../../components/OpsSidebar';
 
 const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? '/api';
 const categories = [
@@ -153,10 +153,10 @@ export default function SuppliersPage() {
   }
 
   return (
+    <OpsSectionShell section="suppliers">
     <main className="supplier-page">
       <header className="supplier-header">
         <div><p className="eyebrow">TrackFlow Ops · directorio centralizado</p><h1>Proveedores</h1><p>Gestiona carriers, suministros y software operacional de USA y Spain.</p></div>
-        <Link className="back-link" href="/">Volver al resumen</Link>
       </header>
       {message && <p className="success-message" role="status">{message}</p>}
       {error && <p className="incident-error" role="alert">{error}</p>}
@@ -173,5 +173,6 @@ export default function SuppliersPage() {
         <form className="supplier-form" onSubmit={createSupplier}><h2>Nuevo proveedor</h2><label>Nombre<input required minLength={1} value={form.name} onChange={(event) => updateForm('name', event.target.value)} /></label><label>País<select value={form.country} onChange={(event) => { const nextCountry = event.target.value as SupplierForm['country']; updateForm('country', nextCountry); }}><option value="USA">USA</option><option value="Spain">Spain</option></select></label><fieldset><legend>Categorías</legend>{categories.map((value) => <label className="checkbox-label" key={value}><input type="checkbox" checked={form.categories.includes(value)} onChange={() => toggleCategory(value)} />{value}</label>)}</fieldset><label>Tarifa por envío<input required type="number" min="0.01" step="0.01" value={form.rate_per_shipment} onChange={(event) => updateForm('rate_per_shipment', Number(event.target.value))} /></label><label>Zona de servicio<input value={form.service_zone ?? ''} onChange={(event) => updateForm('service_zone', event.target.value)} /></label><label>Email de contacto<input type="email" value={form.contact_email ?? ''} onChange={(event) => updateForm('contact_email', event.target.value)} /></label><label>Notas<textarea value={form.notes ?? ''} onChange={(event) => updateForm('notes', event.target.value)} /></label><button className="primary-button" type="submit">Registrar proveedor</button></form>
       </section>
     </main>
+    </OpsSectionShell>
   );
 }
