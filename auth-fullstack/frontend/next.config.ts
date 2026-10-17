@@ -1,12 +1,9 @@
 import type { NextConfig } from 'next';
-
-const backendUrl =
-	process.env.CODESPACES === 'true'
-		? `http://host.docker.internal:${process.env.BACKEND_HOST_PORT ?? '8001'}`
-		: (process.env.BACKEND_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
+import { backendUrl } from './lib/auth-session';
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
+	distDir: process.env.TRACKFLOW_NEXT_DIST_DIR ?? '.next',
 	async rewrites() {
 		return [
 			{

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import KpiCard from '../../components/KpiCard';
+import LogoutButton from '../../components/LogoutButton';
 
 const carriers = [
   { name: 'SEUR', country: 'España · 1.240 envíos', rate: '96,4%', color: '#2f8b6a' },
@@ -54,9 +55,7 @@ export default function BackofficeHome() {
             <Link className="side-link" href="/">
               <span aria-hidden="true">⌂</span> Ir a inicio
             </Link>
-            <Link className="side-link" href="/login">
-              <span aria-hidden="true">⊚</span> Acceder
-            </Link>
+            <LogoutButton />
           </nav>
         </aside>
         <main className="main" id="main-content">

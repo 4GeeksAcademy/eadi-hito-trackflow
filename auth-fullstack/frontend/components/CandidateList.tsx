@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Candidate, CandidateStage, CandidateStatus } from '../types/candidate';
 import { createCandidate, getRecords } from '../lib/api';
+import { OpsSectionShell } from './OpsSidebar';
 
 const CandidateForm = dynamic(() => import('./CandidateForm'), {
   loading: () => <p role="status" className="text-sm text-slate-600">Cargando formulario…</p>,
@@ -85,6 +86,7 @@ export default function CandidateList() {
   };
 
   return (
+    <OpsSectionShell section="candidates">
     <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
       <header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-900 p-6 text-white shadow-sm md:flex-row md:items-center md:justify-between">
         <div>
@@ -177,5 +179,6 @@ export default function CandidateList() {
         </section>
       )}
     </main>
+    </OpsSectionShell>
   );
 }
