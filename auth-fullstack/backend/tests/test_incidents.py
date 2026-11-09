@@ -1,9 +1,34 @@
 from fastapi.testclient import TestClient
+import pytest
 
 from main import app
 from incident_service import clear_incidents
+from auth_dependencies import create_access_token
+from auth_service import create_user
+from models import UserCreate
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def authenticated_client(isolated_database):
+    user = create_user(UserCreate(email="incidents@example.com", password="Correcta123"))
+    client.headers["Authorization"] = f"Bearer {create_access_token(user)}"
+    yield
+    client.headers.pop("Authorization", None)
+
+
+@pytest.mark.parametrize("method,path", [
+    ("GET", "/api/incidents"),
+    ("POST", "/api/incidents"),
+    ("GET", "/api/incidents/summary"),
+    ("GET", "/api/incidents/1"),
+    ("PATCH", "/api/incidents/1/status"),
+])
+def test_incidents_require_authentication(method, path):
+    with TestClient(app) as anonymous:
+        assert anonymous.request(method, path, json=payload()).status_code == 401
+        assert anonymous.request(method, path, json=payload(), headers={"Authorization": "Bearer invalid"}).status_code == 401
 
 
 def setup_function() -> None:

@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from auth_dependencies import create_access_token, get_current_user
 from auth_service import get_profile_by_user_id, get_user_by_email, update_password, user_response, verify_password
-from email_service import EmailConfigurationError
+from email_service import EmailConfigurationError, ensure_email_configured
 from models import AuthenticatedUser, ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, MessageResponse, ResetPasswordRequest, TokenResponse, User
 from password_reset_service import consume_reset_token, send_reset_for_email, validate_reset_token
 
@@ -34,11 +34,16 @@ def auth_me(user: User = Depends(get_current_user)) -> AuthenticatedUser:
 @router.post("/forgot-password", response_model=MessageResponse, status_code=status.HTTP_200_OK)
 def forgot_password(payload: ForgotPasswordRequest) -> MessageResponse:
     try:
+        ensure_email_configured()
+    except EmailConfigurationError as error:
+        logger.error("Password reset no disponible: configuración de email incompleta.")
+        raise HTTPException(status_code=503, detail="El servicio de correo no está disponible. Contacta con el administrador.") from error
+    try:
         send_reset_for_email(str(payload.email))
     except EmailConfigurationError:
         logger.warning("Password reset email no enviado: configuración de email incompleta.")
-    except RuntimeError:
-        logger.error("Password reset email no enviado por un fallo del proveedor.")
+    except RuntimeError as error:
+        logger.error("Password reset email no enviado por un fallo del proveedor (%s).", type(error.__cause__).__name__)
     return MessageResponse(message="Si esa dirección está registrada, recibirás un enlace en breve")
 
 

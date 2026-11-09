@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 import resend
+from resend.exceptions import ResendError
 from dotenv import load_dotenv
 
 
@@ -15,12 +16,14 @@ class EmailConfigurationError(RuntimeError):
     pass
 
 
-def send_password_reset_email(to_email: str, token: str) -> None:
-    api_key = os.getenv("RESEND_API_KEY")
-    if not api_key:
+def ensure_email_configured() -> None:
+    if not os.getenv("RESEND_API_KEY", "").strip():
         raise EmailConfigurationError("Falta RESEND_API_KEY en .env")
 
-    resend.api_key = api_key
+
+def send_password_reset_email(to_email: str, token: str) -> None:
+    ensure_email_configured()
+    resend.api_key = os.getenv("RESEND_API_KEY", "").strip()
 
     frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
     email_from = os.getenv("EMAIL_FROM", "TrackFlow <onboarding@resend.dev>")
@@ -45,5 +48,5 @@ def send_password_reset_email(to_email: str, token: str) -> None:
                 ),
             }
         )
-    except (resend.BatchValidationError, OSError) as error:
+    except (ResendError, OSError) as error:
         raise RuntimeError("No se pudo enviar el email de restablecimiento.") from error

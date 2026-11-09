@@ -216,10 +216,11 @@
   "users": {
     "1": {
       "email": "eadi.para.composio@gmail.com",
-      "hashed_password": "$2b$12$FxSF6F.IEDEgfMoeMXvgzuyPV1kTEKBfBMnW0LyH8ZSXZ/QBlxKnO",
+      "hashed_password": "$2b$12$wHtKjUGgm/vEsae2XTxidetCA8G0kvY08VH0IqpntzVCUcDz5OoKq",
       "is_active": true,
       "role": "user",
-      "created_at": "2026-09-12T00:20:44.762469+00:00"
+      "created_at": "2026-09-12T00:20:44.762469+00:00",
+      "user_uuid": "237144dc-25e3-4437-83e4-4621c00e415b"
     },
     "2": {
       "email": "test@test.com",
@@ -592,6 +593,12 @@
       "user_id": 1,
       "expires_at": "2026-09-23T23:40:26.183520+00:00",
       "used_at": "2026-09-23T23:25:46.554726+00:00"
+    },
+    "57": {
+      "token_id": "bMfRfelkQGEU2heFHXutj39lv3ajLSpu",
+      "user_id": 1,
+      "expires_at": "2026-10-16T23:27:13.921717+00:00",
+      "used_at": "2026-10-16T23:12:32.018000+00:00"
     }
   },
   "incidents": {

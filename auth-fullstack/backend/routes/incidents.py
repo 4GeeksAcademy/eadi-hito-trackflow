@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
+from auth_dependencies import get_current_user
 from cache import response_cache
 from incident_service import create_incident, get_incident, incident_summary, list_incidents, update_incident_status
 from models import Incident, IncidentBranch, IncidentCategory, IncidentCreate, IncidentOrigin, IncidentStatus, IncidentSummary, IncidentUpdateStatus
 
-router = APIRouter(prefix="/api/incidents", tags=["incidents"])
+router = APIRouter(prefix="/api/incidents", tags=["incidents"], dependencies=[Depends(get_current_user)])
 
 
 @router.post("", response_model=Incident, status_code=status.HTTP_201_CREATED)

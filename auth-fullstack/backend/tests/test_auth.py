@@ -76,7 +76,12 @@ def test_get_current_user_rejects_expired_token(user):
     assert error.value.status_code == 401
 
 
-def test_forgot_password_is_generic_for_unknown_email(monkeypatch):
+@pytest.fixture
+def configured_email_service(monkeypatch):
+    monkeypatch.setattr("routes.auth.ensure_email_configured", lambda: None)
+
+
+def test_forgot_password_is_generic_for_unknown_email(monkeypatch, configured_email_service):
     sent = []
     monkeypatch.setattr("routes.auth.send_reset_for_email", lambda email: sent.append(email))
     response = forgot_password(ForgotPasswordRequest(email="unknown@example.com"))
@@ -84,11 +89,33 @@ def test_forgot_password_is_generic_for_unknown_email(monkeypatch):
     assert sent == ["unknown@example.com"]
 
 
-def test_forgot_password_sends_reset_for_existing_email(user, monkeypatch):
+def test_forgot_password_sends_reset_for_existing_email(user, monkeypatch, configured_email_service):
     sent = []
     monkeypatch.setattr("routes.auth.send_reset_for_email", lambda email: sent.append(email))
     forgot_password(ForgotPasswordRequest(email="person@example.com"))
     assert sent == ["person@example.com"]
+
+
+def test_forgot_password_reports_missing_configuration_without_looking_up_email(monkeypatch):
+    monkeypatch.delenv("RESEND_API_KEY", raising=False)
+    monkeypatch.setattr("routes.auth.send_reset_for_email", lambda _email: pytest.fail("No debe consultarse el usuario sin configurar el correo"))
+    response = client.post("/auth/forgot-password", json={"email": "person@example.com"})
+    assert response.status_code == 503
+    assert response.json() == {"detail": "El servicio de correo no está disponible. Contacta con el administrador."}
+
+
+def test_email_provider_errors_are_wrapped_without_invalid_exception_handler(monkeypatch):
+    import email_service
+
+    monkeypatch.setattr(email_service, "ensure_email_configured", lambda: None)
+
+    def unavailable(_payload):
+        raise OSError("Proveedor no disponible")
+
+    monkeypatch.setattr(email_service.resend.Emails, "send", unavailable)
+    with pytest.raises(RuntimeError, match="No se pudo enviar") as error:
+        email_service.send_password_reset_email("person@example.com", "temporary-test-token")
+    assert isinstance(error.value.__cause__, OSError)
 
 
 def test_reset_password_updates_password_and_consumes_token(user, monkeypatch):
@@ -127,7 +154,7 @@ def test_change_password_updates_password(user):
     assert verify_password("NuevaClave123", get_user_by_email("person@example.com"))
 
 
-def test_auth_http_responses_exclude_email_and_credentials(monkeypatch):
+def test_auth_http_responses_exclude_email_and_credentials(monkeypatch, configured_email_service):
     monkeypatch.setattr("routes.auth.send_reset_for_email", lambda _email: None)
     registration = client.post(
         "/users",
