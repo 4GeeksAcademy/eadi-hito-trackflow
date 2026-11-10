@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
         secure: request.nextUrl.protocol === 'https:',
         sameSite: 'lax',
         path: '/',
+        maxAge: 300,
       });
       response.headers.set('Cache-Control', 'no-store');
       return response;

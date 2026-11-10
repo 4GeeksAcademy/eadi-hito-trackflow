@@ -98,6 +98,10 @@ export function getInventoryOrders(): Promise<InventoryOrder[]> {
   return inventoryRequest<InventoryOrder[]>('/orders');
 }
 
+export function deleteInventoryOrder(type: InventoryOrder['type'], id: number): Promise<void> {
+  return inventoryRequest<void>(`/orders/${type}/${id}`, { method: 'DELETE' }, true);
+}
+
 export function createInboundOrder(payload: InboundPayload): Promise<unknown> {
   return inventoryRequest('/orders/inbound', { method: 'POST', body: JSON.stringify(payload) }, true);
 }

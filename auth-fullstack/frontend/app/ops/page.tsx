@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import KpiCard from '../../components/KpiCard';
 import LogoutButton from '../../components/LogoutButton';
+import ThemeToggle from '../../components/ThemeToggle';
 
 const carriers = [
-  { name: 'SEUR', country: 'España · 1.240 envíos', rate: '96,4%', color: '#2f8b6a' },
-  { name: 'UPS', country: 'Estados Unidos · 980 envíos', rate: '94,1%', color: '#ef795f' },
-  { name: 'MRW', country: 'España · 740 envíos', rate: '91,8%', color: '#7d8ee8' },
-  { name: 'FedEx', country: 'Estados Unidos · 620 envíos', rate: '89,7%', color: '#d09d3e' }
+  { name: 'SEUR', country: 'España · 1.240 envíos', rate: '96,4%', color: '#0867e9' },
+  { name: 'UPS', country: 'Estados Unidos · 980 envíos', rate: '94,1%', color: '#4d94f5' },
+  { name: 'MRW', country: 'España · 740 envíos', rate: '91,8%', color: '#7fb4ff' },
+  { name: 'FedEx', country: 'Estados Unidos · 620 envíos', rate: '89,7%', color: '#b7d3ff' }
 ];
 
 export default function BackofficeHome() {
@@ -64,10 +65,13 @@ export default function BackofficeHome() {
               <div className="eyebrow">
                 TrackFlow Ops · Datos de demostración
               </div>
-              <h1>Buenos días, Ana.</h1>
+              <h1>Buenos días, Evelin.</h1>
             </div>
-            <div className="date-pill">
-              Actualizado hace 4 min · 09 sep 2026
+            <div className="topbar-actions">
+              <ThemeToggle />
+              <div className="date-pill">
+                Actualizado hace 4 min · 09 sep 2026
+              </div>
             </div>
           </header>
           <section className="kpi-grid" aria-label="Indicadores principales">

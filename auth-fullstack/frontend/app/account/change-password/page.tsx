@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import SiteNavbar from '../../../components/SiteNavbar';
 
 export default function ChangePasswordPage() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -38,5 +39,5 @@ export default function ChangePasswordPage() {
     }
   }
 
-  return <main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Cambiar contraseña</h1><form onSubmit={submit}><label>Contraseña actual<input type="password" required value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} /></label><label>Nueva contraseña<input type="password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} /></label><label>Confirmar contraseña<input type="password" required minLength={8} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}{message && <p className="success-message" role="status">{message}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Actualizando…' : 'Actualizar contraseña'}</button></form><Link href="/">Volver al resumen</Link></section></main>;
+  return <div className="page-shell login-shell"><SiteNavbar currentPage="login" /><main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Cambiar contraseña</h1><form onSubmit={submit}><label>Contraseña actual<input type="password" required value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} /></label><label>Nueva contraseña<input type="password" required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} /></label><label>Confirmar contraseña<input type="password" required minLength={8} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}{message && <p className="success-message" role="status">{message}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Actualizando…' : 'Actualizar contraseña'}</button></form><Link href="/">Volver al resumen</Link></section></main></div>;
 }

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
+import SiteNavbar from '../../components/SiteNavbar';
 
 function destination() {
   const next = new URLSearchParams(window.location.search).get('next');
@@ -19,6 +20,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [touched, setTouched] = useState({ email: false, password: false });
+  const emailError = !email ? 'Ingresa tu email.' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'Ingresa un email válido.' : '';
+  const passwordError = !password ? 'Ingresa tu contraseña.' : '';
 
   useEffect(() => {
     const token = localStorage.getItem('trackflow_access_token');
@@ -36,6 +40,8 @@ export default function LoginPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
+    setTouched({ email: true, password: true });
+    if (emailError || passwordError) return;
     setSubmitting(true);
     try {
       const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
@@ -57,5 +63,11 @@ export default function LoginPage() {
     }
   }
 
-  return <main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Iniciar sesión</h1><form onSubmit={submit}><label>Email<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label><label>Contraseña<input type="password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Accediendo…' : 'Entrar'}</button></form><Link href="/forgot-password">¿Olvidaste tu contraseña?</Link><br /><Link href="/register">Crear una cuenta</Link></section></main>;
+  return <div className="page-shell login-shell"><SiteNavbar currentPage="login" /><main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Iniciar sesión</h1>
+    <form onSubmit={submit} noValidate>
+      <div className="field"><label>Email<input type="email" required value={email} aria-invalid={touched.email && Boolean(emailError)} aria-describedby="login-email-error" onBlur={() => setTouched((current) => ({ ...current, email: true }))} onChange={(event) => setEmail(event.target.value)} /></label><span id="login-email-error" className="form-message error" aria-live="polite">{touched.email ? emailError : ''}</span></div>
+      <div className="field"><label>Contraseña<input type="password" required value={password} aria-invalid={touched.password && Boolean(passwordError)} aria-describedby="login-password-error" onBlur={() => setTouched((current) => ({ ...current, password: true }))} onChange={(event) => setPassword(event.target.value)} /></label><span id="login-password-error" className="form-message error" aria-live="polite">{touched.password ? passwordError : ''}</span></div>
+      {error && <p className="incident-error" role="alert">{error}</p>}
+      <button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Accediendo…' : 'Entrar'}</button>
+    </form><Link href="/forgot-password">¿Olvidaste tu contraseña?</Link><br /><Link href="/register">Crear una cuenta</Link></section></main></div>;
 }

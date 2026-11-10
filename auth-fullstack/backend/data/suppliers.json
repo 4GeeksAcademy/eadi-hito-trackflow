@@ -211,6 +211,20 @@
       "contact_email": "partnerships@returnbear.com",
       "notes": "Gestión de devoluciones para clientes de Los Ángeles.",
       "updated_at": "2026-09-11T23:03:15.789921+00:00"
+    },
+    "16": {
+      "name": "Facu",
+      "country": "Spain",
+      "categories": [
+        "it_and_wms_software"
+      ],
+      "rate_per_shipment": 1.0,
+      "currency": "EUR",
+      "status": "active",
+      "service_zone": null,
+      "contact_email": null,
+      "notes": null,
+      "updated_at": "2026-11-10T02:20:13.199578+00:00"
     }
   },
   "users": {
@@ -606,12 +620,12 @@
       "title": "Return requested within 14-day window, awaiting approval",
       "description": "Return requested within 14-day window, awaiting approval",
       "category": "returns_issue",
-      "status": "in_progress",
+      "status": "resolved",
       "origin": "customer",
       "branch": "zaragoza_office",
       "source_id": "TRF-000001",
       "created_at": "2024-01-08T00:00:00+00:00",
-      "updated_at": "2026-09-24T00:44:16.994294+00:00"
+      "updated_at": "2026-11-10T02:19:19.360837+00:00"
     },
     "2": {
       "title": "Outer box crushed, inner product compromised",
@@ -1690,6 +1704,16 @@
       "source_id": "TRF-000100",
       "created_at": "2024-01-24T00:00:00+00:00",
       "updated_at": "2024-01-24T00:00:00+00:00"
+    },
+    "100": {
+      "title": "sdsd",
+      "description": "sdsd",
+      "category": "lost_parcel",
+      "status": "discarded",
+      "origin": "branch",
+      "branch": "la_warehouse",
+      "created_at": "2026-11-09T20:50:05.449122+00:00",
+      "updated_at": "2026-11-09T20:50:22.375841+00:00"
     }
   }
 }

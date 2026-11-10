@@ -33,7 +33,7 @@ def _jwt_settings() -> tuple[str, int]:
 
 def create_access_token(user: User) -> str:
     secret, minutes = _jwt_settings()
-    expires_at = datetime.now(timezone.utc) + timedelta(minutes=minutes)
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=min(minutes, 5))
     payload = {"sub": str(user.id), "email": str(user.email), "role": user.role.value, "exp": expires_at}
     return jwt.encode(payload, secret, algorithm="HS256")
 

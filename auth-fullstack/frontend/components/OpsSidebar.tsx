@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 type Section = 'inventory' | 'incidents' | 'suppliers' | 'candidates';
 
@@ -29,7 +30,7 @@ export default function OpsSidebar({ section }: { section: Section }) {
 
   return (
     <aside className="sidebar ops-section-sidebar">
-      <div className="brand">Track<span>Flow</span></div>
+      <div className="ops-sidebar-heading"><div className="brand">Track<span>Flow</span></div><ThemeToggle /></div>
       <nav aria-label={`Navegación de ${title}`}>
         <div className="side-label">{title}</div>
         {links.map(({ href, label, icon }) => (
