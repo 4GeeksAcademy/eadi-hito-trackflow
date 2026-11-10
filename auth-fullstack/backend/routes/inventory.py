@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import func
 from sqlmodel import Session, select
 
@@ -152,3 +153,20 @@ def list_orders(session: Session = Depends(get_sqlmodel_session)) -> list[Invent
                 )
             )
     return sorted(orders, key=lambda order: (order.created_at, order.type, order.id), reverse=True)
+
+
+@router.delete("/orders/{order_type}/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_order(
+    order_type: Literal["inbound", "outbound"],
+    id: int,
+    session: Session = Depends(get_sqlmodel_session),
+    _user: User = Depends(get_current_user),
+) -> Response:
+    record = session.get(StockEntry if order_type == "inbound" else StockExit, id)
+    if record is None:
+        raise HTTPException(status_code=404, detail="Movimiento no encontrado.")
+    if order_type == "inbound" and _stock_for(session, record.sku_id, record.warehouse) < record.quantity:
+        raise HTTPException(status_code=409, detail="No se puede eliminar esta entrada: dejaría el stock negativo. Corrige primero las salidas relacionadas.")
+    session.delete(record)
+    session.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

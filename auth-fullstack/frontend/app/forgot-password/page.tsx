@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import SiteNavbar from '../../components/SiteNavbar';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -27,5 +28,5 @@ export default function ForgotPasswordPage() {
     }
   }
 
-  return <main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Recuperar contraseña</h1>{sent ? <><p role="status">Si esa dirección está registrada, recibirás un enlace en breve.</p><Link href="/login">Volver a iniciar sesión</Link></> : <form onSubmit={submit}><label>Email<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Enviando…' : 'Enviar enlace'}</button></form>}</section></main>;
+  return <div className="page-shell login-shell"><SiteNavbar currentPage="login" /><main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>Recuperar contraseña</h1>{sent ? <><p role="status">Si esa dirección está registrada, recibirás un enlace en breve.</p><Link href="/login">Volver a iniciar sesión</Link></> : <form onSubmit={submit}><label>Email<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? 'Enviando…' : 'Enviar enlace'}</button></form>}</section></main></div>;
 }

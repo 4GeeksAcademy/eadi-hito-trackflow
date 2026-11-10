@@ -1,13 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { FormEvent, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import InventoryShell from '../../InventoryShell';
 import { createOutboundOrder, ExitType, getInventoryProduct, getInventoryProducts, InventoryProduct, Warehouse } from '../../../../lib/inventory';
 
 export default function OutboundOrderPage() {
+  return <Suspense fallback={<InventoryShell><p role="status">Cargando formulario…</p></InventoryShell>}><OutboundOrderForm /></Suspense>;
+}
+
+function OutboundOrderForm() {
   const router = useRouter();
+  const requestedSkuId = useSearchParams().get('sku_id');
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [skuId, setSkuId] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -31,10 +36,14 @@ export default function OutboundOrderPage() {
 
   const loadProducts = useCallback(async () => {
     setLoadingProducts(true); setError('');
-    try { const loaded = await getInventoryProducts(); setProducts(loaded); }
+    try {
+      const loaded = await getInventoryProducts();
+      setProducts(loaded);
+      setSkuId(loaded.some((product) => String(product.id) === requestedSkuId) ? requestedSkuId! : '');
+    }
     catch (loadError) { setError(loadError instanceof Error ? loadError.message : 'No se pudo cargar la lista de SKU.'); }
     finally { setLoadingProducts(false); }
-  }, []);
+  }, [requestedSkuId]);
   useEffect(() => { const timer = window.setTimeout(() => void loadProducts(), 0); return () => window.clearTimeout(timer); }, [loadProducts]);
 
   useEffect(() => {
@@ -81,6 +90,8 @@ export default function OutboundOrderPage() {
       getInventoryProduct(selectedProduct.id).then((product) => { setCurrentStock(product.current_stock); setStockProductId(selectedProduct.id); }).catch(() => undefined);
     } finally { setSubmitting(false); }
   }
+
+  if (!loadingProducts && products.length === 0) return <InventoryShell><header className="topbar"><h1>Registrar salida</h1><Link className="inventory-back" href="/inventory/products">Volver a productos</Link></header><section className="inventory-form-panel"><p className="inventory-error" role="alert">{error || 'No hay productos registrados en el catálogo.'}</p><button className="inventory-refresh" type="button" onClick={() => void loadProducts()}>Reintentar carga de productos</button></section></InventoryShell>;
 
   return <InventoryShell><header className="topbar"><div><div className="eyebrow">Inventario · Despacho o ajuste</div><h1>Registrar salida</h1><p className="inventory-intro">El stock actual se consulta al seleccionar el SKU.</p></div><Link className="inventory-back" href="/inventory/products">← Volver a productos</Link></header><section className="inventory-form-panel"><div className="inventory-form-heading"><p className="eyebrow">Nueva salida</p><h2>Datos de la salida</h2></div>{error && <p className="inventory-error" role="alert">{error}</p>}{message && <p className="inventory-success" role="status">{message}</p>}<form className="inventory-form" onSubmit={submit}><label>Producto / SKU<select required value={skuId} onChange={(event) => { setSkuId(event.target.value); setStockProductId(null); setLoadingStock(false); setCurrentStock(null); setQuantityError(''); setError(''); setMessage(''); }} disabled={loadingProducts || products.length === 0}><option value="">{loadingProducts ? 'Cargando productos…' : 'Selecciona un producto'}</option>{products.map((product) => <option key={product.id} value={product.id}>{product.name} · {product.sku} · {product.client_name} ({product.warehouse})</option>)}</select></label><div className="inventory-stock-summary" aria-live="polite"><span>Stock actual</span><strong>{!selectedProduct ? 'Selecciona un producto' : !isStockReady && loadingStock ? 'Consultando…' : !isStockReady ? 'Consultando…' : currentStock === null ? 'No disponible' : `${currentStock} unidades`}</strong>{selectedProduct && <span className="warehouse">{selectedProduct.name} · {selectedProduct.warehouse}</span>}</div><label>Unidades a retirar<input type="number" min="1" step="1" required value={quantity} onChange={(event) => updateQuantity(event.target.value)} aria-invalid={Boolean(quantityError || exceedsStock)} aria-describedby={quantityError || exceedsStock ? 'outbound-quantity-error' : undefined} /></label>{(quantityError || exceedsStock) && <p id="outbound-quantity-error" className="inventory-inline-error" role="alert">{quantityError || `La cantidad supera el stock actual (${displayedStock} unidades).`}</p>}<label>Tipo de salida<select value={exitType} onChange={(event) => { setExitType(event.target.value as ExitType); setError(''); }}><option value="dispatch">Despacho</option><option value="loss">Pérdida</option></select></label>{exitType === 'dispatch' && <label>Número de seguimiento<input type="text" required value={tracking} onChange={(event) => setTracking(event.target.value)} placeholder="Ej.: TRK-458190" /></label>}<div className="inventory-form-actions"><button className="primary-button" type="submit" disabled={submitting || loadingProducts || products.length === 0 || loadingStock || !isStockReady || Boolean(quantityError) || exceedsStock || currentStock === null}>{submitting ? 'Registrando…' : 'Registrar salida'}</button><Link className="inventory-back" href="/inventory/orders">Ver historial</Link></div></form></section></InventoryShell>;
 }

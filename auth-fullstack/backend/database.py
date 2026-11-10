@@ -24,7 +24,7 @@ from sqlalchemy.pool import StaticPool
 
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite://")
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{Path(__file__).resolve().parent / 'data' / 'inventory.sqlite3'}")
 
 _sqlite_options = (
     {"connect_args": {"check_same_thread": False}, "poolclass": StaticPool}
@@ -52,3 +52,12 @@ def initialize_inventory_schema() -> None:
     from sqlmodel import SQLModel
 
     SQLModel.metadata.create_all(engine)
+    if not os.getenv("DATABASE_URL"):
+        from inventory_seed import SKU_SEED
+        from inventory_models import SKU
+        from sqlmodel import select
+
+        with Session(engine) as session:
+            if session.exec(select(SKU)).first() is None:
+                session.add_all([SKU.model_validate(data) for data in SKU_SEED])
+                session.commit()
