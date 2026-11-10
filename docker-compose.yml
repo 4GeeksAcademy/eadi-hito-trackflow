@@ -10,7 +10,7 @@ services:
         required: false
     environment:
       CODESPACES: ${CODESPACES:-}
-      BACKEND_HOST_PORT: ${BACKEND_PORT:-8001}
+      BACKEND_HOST_PORT: ${BACKEND_HOST_PORT:-8000}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
@@ -36,7 +36,7 @@ services:
       - path: .env
         required: false
     ports:
-      - "${BACKEND_PORT:-8001}:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./auth-fullstack/backend:/app
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
