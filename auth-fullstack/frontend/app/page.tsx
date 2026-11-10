@@ -17,6 +17,19 @@ export default function HomePage() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/auth/session', { cache: 'no-store' })
+      .then((response) => {
+        if (active) setIsAuthenticated(response.ok);
+      })
+      .catch(() => {
+        if (active) setIsAuthenticated(false);
+      });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     function updateVisibility() {
@@ -66,12 +79,15 @@ export default function HomePage() {
     setSubmitted(true);
   }
 
+  const accountLabel = isAuthenticated ? 'Evelin' : 'Acceder';
+  const accountHref = isAuthenticated ? '/ops' : '/login';
+
   return <main className="page-shell">
     {showBackToTop && <button className="back-to-top" type="button" onClick={scrollToTop} aria-label="Volver al inicio de la página" title="Volver al inicio"><span aria-hidden="true">&#8593;</span></button>}
     <header className="site-header">
       <nav className="container site-nav" aria-label="Navegación principal">
         <a href="#inicio" className="brand-lockup" aria-label="TrackFlow, inicio"><Image src="/trackflow-logo.png" alt="" width={40} height={36} className="brand-mark brand-mark-light" /><Image src="/trackflow-logo.png" alt="" width={40} height={36} className="brand-mark brand-mark-dark" /><span className="brand-wordmark">Track<span>Flow</span></span></a>
-        <div className="site-nav-links"><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><a className="nav-link" href="#careers">Trabaja con nosotros</a><Link className="nav-link" href="/login">Acceder</Link><LanguageSwitch /><ThemeToggle /><a className="button button-primary" href="#contacto">Solicitar información</a></div>
+        <div className="site-nav-links"><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><a className="nav-link" href="#careers">Trabaja con nosotros</a><Link className="nav-link" href={accountHref}>{accountLabel}</Link><LanguageSwitch /><ThemeToggle /><a className="button button-primary" href="#contacto">Solicitar información</a></div>
       </nav>
     </header>
     <section className="container hero-grid" id="inicio">
@@ -117,6 +133,6 @@ export default function HomePage() {
       </div>
     </section>
     <section className="section container" id="careers"><div className="contact-panel"><div><div className="eyebrow">Equipo TrackFlow</div><h2 style={{ fontSize: 'clamp(2.3rem, 5vw, 4rem)', lineHeight: 1, margin: '14px 0 20px' }}>Trabaja con nosotros.</h2><p style={{ color: 'var(--muted)', lineHeight: 1.6 }}>Cuéntanos sobre tu experiencia y adjunta tu CV. El equipo de RRHH revisará tu candidatura.</p></div><CandidateApplicationForm /></div></section>
-    <footer className="site-footer"><div className="container footer-row"><span>© 2025 TrackFlow. Todos los derechos reservados.</span><span style={{ display: 'flex', gap: 18 }}><Link href="/login">Acceder</Link></span></div></footer>
+    <footer className="site-footer"><div className="container footer-row"><span>© 2025 TrackFlow. Todos los derechos reservados.</span><span style={{ display: 'flex', gap: 18 }}><Link href={accountHref}>{accountLabel}</Link></span></div></footer>
   </main>;
 }

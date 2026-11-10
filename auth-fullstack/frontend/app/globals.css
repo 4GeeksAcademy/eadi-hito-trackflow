@@ -376,6 +376,7 @@ html[data-theme='dark'] .inventory-order-dialog { border-color: #38577b; backgro
 .ops-sidebar-heading .brand { padding: 0; }
 .ops-sidebar-heading .theme-toggle { flex: 0 0 40px; border-color: #527bac; color: #e7f0ff; }
 .ops-section-sidebar .side-link:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.logout-button { cursor: pointer; }
 @media (min-width: 561px) and (max-width: 960px) {
   .ops-section-shell { grid-template-columns: 76px minmax(0, 1fr); }
   .ops-section-sidebar .side-link span { font-size: 1rem; }
