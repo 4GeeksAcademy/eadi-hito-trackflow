@@ -14,8 +14,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "${FRONTEND_PORT:-3002}:3000"
-      - "${INCIDENT_MANAGER_PORT:-3003}:3001"
+      - "3000:3000"
     volumes:
       - ./auth-fullstack/frontend:/workspace/auth-fullstack/frontend
       - /workspace/auth-fullstack/frontend/node_modules

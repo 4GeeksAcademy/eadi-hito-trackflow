@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useSyncExternalStore } from 'react';
+import { useLocale } from './LocaleProvider';
 
 const THEME_STORAGE_KEY = 'trackflow-theme';
 const THEME_CHANGE_EVENT = 'trackflow-theme-change';
@@ -20,6 +21,8 @@ function subscribeToTheme(callback: () => void) {
 
 export default function ThemeToggle() {
   const isDark = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, getServerThemeSnapshot);
+  const isEnglish = useLocale() === 'en';
+  const label = isDark ? (isEnglish ? 'Enable light mode' : 'Activar modo claro') : (isEnglish ? 'Enable dark mode' : 'Activar modo oscuro');
 
   useEffect(() => {
     let prefersDark = false;
@@ -48,9 +51,9 @@ export default function ThemeToggle() {
       className="theme-toggle"
       type="button"
       onClick={toggleTheme}
-      aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
+      aria-label={label}
       aria-pressed={isDark}
-      title={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
+      title={label}
     >
       {isDark ? (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">

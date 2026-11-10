@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import InventoryShell from '../../InventoryShell';
+import { useLocale } from '../../../../components/LocaleProvider';
 import { createOutboundOrder, ExitType, getInventoryProduct, getInventoryProducts, InventoryProduct, Warehouse } from '../../../../lib/inventory';
+import { localizedPath } from '../../../../lib/i18n';
 
 export default function OutboundOrderPage() {
   return <Suspense fallback={<InventoryShell><p role="status">Cargando formulario…</p></InventoryShell>}><OutboundOrderForm /></Suspense>;
@@ -12,6 +14,7 @@ export default function OutboundOrderPage() {
 
 function OutboundOrderForm() {
   const router = useRouter();
+  const locale = useLocale();
   const requestedSkuId = useSearchParams().get('sku_id');
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [skuId, setSkuId] = useState('');
@@ -89,6 +92,12 @@ function OutboundOrderForm() {
       else setError(reason);
       getInventoryProduct(selectedProduct.id).then((product) => { setCurrentStock(product.current_stock); setStockProductId(selectedProduct.id); }).catch(() => undefined);
     } finally { setSubmitting(false); }
+  }
+
+  if (locale === 'en') {
+    const form = <form className="inventory-form" onSubmit={submit}><label>Product / SKU<select required value={skuId} onChange={(event) => { setSkuId(event.target.value); setStockProductId(null); setLoadingStock(false); setCurrentStock(null); setQuantityError(''); setError(''); setMessage(''); }} disabled={loadingProducts || products.length === 0}><option value="">{loadingProducts ? 'Loading products…' : 'Select a product'}</option>{products.map((product) => <option key={product.id} value={product.id}>{product.name} · {product.sku} · {product.client_name} ({product.warehouse})</option>)}</select></label><div className="inventory-stock-summary" aria-live="polite"><span>Current stock</span><strong>{!selectedProduct ? 'Select a product' : !isStockReady && loadingStock ? 'Checking…' : !isStockReady ? 'Checking…' : currentStock === null ? 'Unavailable' : `${currentStock} units`}</strong>{selectedProduct && <span className="warehouse">{selectedProduct.name} · {selectedProduct.warehouse}</span>}</div><label>Units to remove<input type="number" min="1" step="1" required value={quantity} onChange={(event) => updateQuantity(event.target.value)} aria-invalid={Boolean(quantityError || exceedsStock)} aria-describedby={quantityError || exceedsStock ? 'outbound-quantity-error' : undefined} /></label>{(quantityError || exceedsStock) && <p id="outbound-quantity-error" className="inventory-inline-error" role="alert">{quantityError || `Quantity exceeds current stock (${displayedStock} units).`}</p>}<label>Outbound type<select value={exitType} onChange={(event) => { setExitType(event.target.value as ExitType); setError(''); }}>{<><option value="dispatch">Dispatch</option><option value="loss">Loss / adjustment</option></>}</select></label>{exitType === 'dispatch' && <label>Tracking number<input type="text" required value={tracking} onChange={(event) => { setTracking(event.target.value); setError(''); }} placeholder="e.g. 1Z999AA10123456784" /></label>}{error && <p className="inventory-error" role="alert">{error}</p>}{message && <p className="inventory-success" role="status">{message}</p>}<div className="inventory-form-actions"><button className="primary-button" type="submit" disabled={submitting || loadingProducts || !isStockReady || !selectedProduct || currentStock === null}>{submitting ? 'Recording…' : 'Register outbound order'}</button><Link className="inventory-back" href={localizedPath('/inventory/products', 'en')}>Cancel</Link></div></form>;
+    if (!loadingProducts && products.length === 0) return <InventoryShell><header className="topbar"><h1>Register outbound order</h1><Link className="inventory-back" href={localizedPath('/inventory/products', 'en')}>Back to products</Link></header><section className="inventory-form-panel"><p className="inventory-error" role="alert">{error || 'No products are registered in the catalog.'}</p><button className="inventory-refresh" type="button" onClick={() => void loadProducts()}>Retry loading products</button></section></InventoryShell>;
+    return <InventoryShell><header className="topbar"><div><div className="eyebrow">Inventory · Dispatch or adjustment</div><h1>Register outbound order</h1><p className="inventory-intro">Current stock is checked when you select an SKU.</p></div><Link className="inventory-back" href={localizedPath('/inventory/products', 'en')}>← Back to products</Link></header><section className="inventory-form-panel"><div className="inventory-form-heading"><p className="eyebrow">New outbound order</p><h2>Outbound details</h2></div>{!isStockReady && selectedProduct && <p className="inventory-state" role="status">Checking current stock…</p>}{form}</section></InventoryShell>;
   }
 
   if (!loadingProducts && products.length === 0) return <InventoryShell><header className="topbar"><h1>Registrar salida</h1><Link className="inventory-back" href="/inventory/products">Volver a productos</Link></header><section className="inventory-form-panel"><p className="inventory-error" role="alert">{error || 'No hay productos registrados en el catálogo.'}</p><button className="inventory-refresh" type="button" onClick={() => void loadProducts()}>Reintentar carga de productos</button></section></InventoryShell>;

@@ -15,6 +15,7 @@ export interface Candidate {
   position: string;
   linkedinUrl: string;
   cvUrl: string;
+  cvFileName?: string;
   yearsOfExperience: number;
   status: CandidateStatus;
   stage: CandidateStage;
