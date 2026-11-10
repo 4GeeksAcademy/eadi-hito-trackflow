@@ -3,6 +3,11 @@ import { sessionCookie, validateSession } from './lib/auth-session';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const localizedPath = pathname.startsWith('/en/') ? pathname.slice(3) : pathname;
+  if (!pathname.startsWith('/api/') && !/^\/(ops|inventory|incidents|suppliers|candidates|account)(\/|$)/.test(localizedPath)) {
+    return NextResponse.next();
+  }
+
   if (pathname === '/api/records' && request.method === 'POST') {
     return NextResponse.next();
   }
@@ -16,7 +21,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (!valid) {
-    const login = new URL('/login', request.url);
+    const login = new URL(pathname.startsWith('/en/') ? '/en/login' : '/login', request.url);
     login.searchParams.set('next', pathname + request.nextUrl.search);
     const response = pathname.startsWith('/api/')
       ? NextResponse.json({ error: 'Debes iniciar sesión.' }, { status: 401 })
@@ -37,6 +42,7 @@ export const config = {
   matcher: [
     '/ops/:path*', '/inventory/:path*', '/incidents/:path*',
     '/suppliers/:path*', '/candidates/:path*', '/account/:path*',
+    '/en/:path*',
     '/api/records/:path*', '/api/inventory/:path*', '/api/incidents/:path*',
     '/api/suppliers/:path*',
   ],

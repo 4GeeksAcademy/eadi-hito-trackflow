@@ -1,5 +1,9 @@
 'use client';
 
+import { useLocale } from './LocaleProvider';
+import { translate } from '../lib/i18n';
+
 export default function LogoutButton() {
-  return <form action="/api/auth/logout" method="post" onSubmit={() => localStorage.removeItem('trackflow_access_token')}><button className="side-link" type="submit">Cerrar sesión</button></form>;
+  const locale = useLocale();
+  return <form action={`/api/auth/logout?locale=${locale}`} method="post" onSubmit={() => localStorage.removeItem('trackflow_access_token')}><button className="side-link" type="submit">{translate(locale, 'Cerrar sesión')}</button></form>;
 }

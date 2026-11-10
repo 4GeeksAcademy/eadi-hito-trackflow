@@ -2,6 +2,8 @@
 
 import { FormEvent, useState } from 'react';
 import { CandidateFormValues, CandidateStage, CandidateStatus } from '../types/candidate';
+import { useLocale } from './LocaleProvider';
+import { candidateStageLabel, candidateStatusLabel } from '../lib/candidate-labels';
 
 interface CandidateFormProps {
   mode: 'create' | 'edit';
@@ -28,6 +30,7 @@ const emptyForm: CandidateFormValues = {
 };
 
 export default function CandidateForm({ mode, initialValues, onSubmit, submitLabel, onCancel }: CandidateFormProps) {
+  const isEnglish = useLocale() === 'en';
   const [values, setValues] = useState<CandidateFormValues>(initialValues || emptyForm);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -43,11 +46,11 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
   };
 
   const validate = (): string => {
-    if (!values.name.trim()) return 'El nombre es obligatorio.';
-    if (!values.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) return 'El email debe tener un formato válido.';
-    if (!values.phone.trim()) return 'El teléfono es obligatorio.';
-    if (!values.position.trim()) return 'El puesto es obligatorio.';
-    if (values.yearsOfExperience < 0) return 'Los años de experiencia no pueden ser negativos.';
+    if (!values.name.trim()) return isEnglish ? 'Name is required.' : 'El nombre es obligatorio.';
+    if (!values.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) return isEnglish ? 'Enter a valid email address.' : 'El email debe tener un formato válido.';
+    if (!values.phone.trim()) return isEnglish ? 'Phone is required.' : 'El teléfono es obligatorio.';
+    if (!values.position.trim()) return isEnglish ? 'Position is required.' : 'El puesto es obligatorio.';
+    if (values.yearsOfExperience < 0) return isEnglish ? 'Years of experience cannot be negative.' : 'Los años de experiencia no pueden ser negativos.';
     return '';
   };
 
@@ -67,13 +70,13 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
 
     try {
       await onSubmit(values);
-      setSuccess(mode === 'create' ? 'Candidatura creada correctamente.' : 'Candidatura actualizada correctamente.');
+      setSuccess(mode === 'create' ? (isEnglish ? 'Candidate created successfully.' : 'Candidatura creada correctamente.') : (isEnglish ? 'Candidate updated successfully.' : 'Candidatura actualizada correctamente.'));
       if (mode === 'create') {
         setValues(emptyForm);
       }
     } catch (submitError) {
       setSuccess('');
-      setError(submitError instanceof Error ? submitError.message : 'No se pudo enviar la candidatura.');
+      setError(submitError instanceof Error ? submitError.message : isEnglish ? 'Could not submit the candidate.' : 'No se pudo enviar la candidatura.');
     } finally {
       setIsSubmitting(false);
     }
@@ -83,7 +86,7 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
     <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="grid gap-4 md:grid-cols-2">
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Nombre completo</span>
+          <span>{isEnglish ? 'Full name' : 'Nombre completo'}</span>
           <input name="name" value={values.name} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none ring-0 transition focus:border-emerald-500" required />
         </label>
 
@@ -93,12 +96,12 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Teléfono</span>
+          <span>{isEnglish ? 'Phone' : 'Teléfono'}</span>
           <input name="phone" value={values.phone} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500" required />
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Puesto</span>
+          <span>{isEnglish ? 'Position' : 'Puesto'}</span>
           <input name="position" value={values.position} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500" required />
         </label>
 
@@ -108,35 +111,35 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Enlace al CV</span>
+          <span>{isEnglish ? 'Resume URL' : 'Enlace al CV'}</span>
           <input name="cvUrl" value={values.cvUrl} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500" />
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Años de experiencia</span>
+          <span>{isEnglish ? 'Years of experience' : 'Años de experiencia'}</span>
           <input name="yearsOfExperience" type="number" min="0" value={values.yearsOfExperience} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500" />
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Estado</span>
+          <span>{isEnglish ? 'Status' : 'Estado'}</span>
           <select name="status" value={values.status} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500">
             {statusOptions.map((status) => (
-              <option key={status} value={status}>{status}</option>
+              <option key={status} value={status}>{candidateStatusLabel(status, isEnglish ? 'en' : 'es')}</option>
             ))}
           </select>
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700">
-          <span>Etapa</span>
+          <span>{isEnglish ? 'Stage' : 'Etapa'}</span>
           <select name="stage" value={values.stage} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500">
             {stageOptions.map((stage) => (
-              <option key={stage} value={stage}>{stage}</option>
+              <option key={stage} value={stage}>{candidateStageLabel(stage, isEnglish ? 'en' : 'es')}</option>
             ))}
           </select>
         </label>
 
         <label className="space-y-2 text-sm font-medium text-slate-700 md:col-span-2">
-          <span>Fecha de aplicación</span>
+          <span>{isEnglish ? 'Application date' : 'Fecha de aplicación'}</span>
           <input name="appliedAt" type="date" value={values.appliedAt} onChange={handleChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none transition focus:border-emerald-500" required />
         </label>
       </div>
@@ -146,11 +149,11 @@ export default function CandidateForm({ mode, initialValues, onSubmit, submitLab
 
       <div className="flex items-center gap-3">
         <button type="submit" disabled={isSubmitting} className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-emerald-400">
-          {isSubmitting ? 'Guardando...' : submitLabel}
+          {isSubmitting ? (isEnglish ? 'Saving...' : 'Guardando...') : submitLabel}
         </button>
         {onCancel ? (
           <button type="button" onClick={onCancel} className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
-            Cancelar
+            {isEnglish ? 'Cancel' : 'Cancelar'}
           </button>
         ) : null}
       </div>

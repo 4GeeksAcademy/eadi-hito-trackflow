@@ -7,13 +7,15 @@ export default function SessionGuard() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!/^\/(ops|inventory|incidents|suppliers|candidates|account)(\/|$)/.test(pathname)) return;
+    const isEnglish = pathname === '/en' || pathname.startsWith('/en/');
+    const protectedPath = isEnglish ? pathname.slice(3) : pathname;
+    if (!/^\/(ops|inventory|incidents|suppliers|candidates|account)(\/|$)/.test(protectedPath)) return;
     let expiryTimer: ReturnType<typeof setTimeout>;
     let active = true;
     async function expire() {
       localStorage.removeItem('trackflow_access_token');
       await fetch('/api/auth/logout', { method: 'POST' }).catch(() => undefined);
-      window.location.replace(`/login?next=${encodeURIComponent(pathname)}`);
+      window.location.replace(`${isEnglish ? '/en' : ''}/login?next=${encodeURIComponent(pathname)}`);
     }
     async function check() {
       try {

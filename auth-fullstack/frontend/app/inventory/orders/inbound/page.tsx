@@ -4,14 +4,18 @@ import Link from 'next/link';
 import { FormEvent, Suspense, useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import InventoryShell from '../../InventoryShell';
+import { useLocale } from '../../../../components/LocaleProvider';
 import { createInboundOrder, getInventoryProducts, InventoryProduct, Warehouse } from '../../../../lib/inventory';
+import { localizedPath } from '../../../../lib/i18n';
 
 export default function InboundOrderPage() {
-  return <Suspense fallback={<InventoryShell><p role="status">Cargando formulario…</p></InventoryShell>}><InboundOrderForm /></Suspense>;
+  const locale = useLocale();
+  return <Suspense fallback={<InventoryShell><p role="status">{locale === 'en' ? 'Loading form…' : 'Cargando formulario…'}</p></InventoryShell>}><InboundOrderForm /></Suspense>;
 }
 
 function InboundOrderForm() {
   const router = useRouter();
+  const locale = useLocale();
   const requestedSkuId = useSearchParams().get('sku_id');
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [skuId, setSkuId] = useState('');
@@ -54,6 +58,10 @@ function InboundOrderForm() {
       if (reason.toLowerCase().includes('sesión')) { router.replace('/login'); return; }
       setError(reason);
     } finally { setSubmitting(false); }
+  }
+
+  if (locale === 'en') {
+    return <InventoryShell><header className="topbar"><div><div className="eyebrow">Inventory · Goods received</div><h1>Register inbound order</h1><p className="inventory-intro">Record units received from a client brand.</p></div><Link className="inventory-back" href={localizedPath('/inventory/products', 'en')}>← Back to products</Link></header><section className="inventory-form-panel"><div className="inventory-form-heading"><p className="eyebrow">New receipt</p><h2>Inbound order details</h2></div>{error && <p className="inventory-error" role="alert">{error}</p>}{!loadingProducts && (error || products.length === 0) && <div className="inventory-state">{!error && <p>No products are registered in the catalog.</p>}<button className="inventory-refresh" type="button" onClick={() => void loadProducts()}>Retry loading products</button></div>}{message && <p className="inventory-success" role="status">{message}</p>}<form className="inventory-form" onSubmit={submit}><label>Product / SKU<select required value={skuId} onChange={(event) => setSkuId(event.target.value)} disabled={loadingProducts || products.length === 0}><option value="">{loadingProducts ? 'Loading products…' : 'Select a product'}</option>{products.map((product) => <option key={product.id} value={product.id}>{product.name} · {product.sku} · {product.client_name} ({product.warehouse})</option>)}</select></label><label>Units received<input type="number" min="1" step="1" required value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label><label>Shipment reference<input type="text" required minLength={1} value={reference} onChange={(event) => setReference(event.target.value)} placeholder="e.g. PO-2026-0042" /></label><div className="inventory-form-actions"><button className="primary-button" type="submit" disabled={submitting || loadingProducts || products.length === 0}>{submitting ? 'Recording…' : 'Register inbound order'}</button><Link className="inventory-back" href={localizedPath('/inventory/products', 'en')}>Cancel</Link></div></form></section></InventoryShell>;
   }
 
   return <InventoryShell><header className="topbar"><div><div className="eyebrow">Inventario · Recepción de mercancía</div><h1>Registrar entrada</h1><p className="inventory-intro">Registra las unidades recibidas de una marca cliente.</p></div><Link className="inventory-back" href="/inventory/products">← Volver a productos</Link></header><section className="inventory-form-panel"><div className="inventory-form-heading"><p className="eyebrow">Nueva recepción</p><h2>Datos de la entrada</h2></div>{error && <p className="inventory-error" role="alert">{error}</p>}{!loadingProducts && (error || products.length === 0) && <div className="inventory-state">{!error && <p>No hay productos registrados en el catálogo.</p>}<button className="inventory-refresh" type="button" onClick={() => void loadProducts()}>Reintentar carga de productos</button></div>}{message && <p className="inventory-success" role="status">{message}</p>}<form className="inventory-form" onSubmit={submit}><label>Producto / SKU<select required value={skuId} onChange={(event) => setSkuId(event.target.value)} disabled={loadingProducts || products.length === 0}><option value="">{loadingProducts ? 'Cargando productos…' : 'Selecciona un producto'}</option>{products.map((product) => <option key={product.id} value={product.id}>{product.name} · {product.sku} · {product.client_name} ({product.warehouse})</option>)}</select></label><label>Unidades recibidas<input type="number" min="1" step="1" required value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label><label>Referencia de despacho<input type="text" required minLength={1} value={reference} onChange={(event) => setReference(event.target.value)} placeholder="Ej.: PO-2026-0042" /></label><div className="inventory-form-actions"><button className="primary-button" type="submit" disabled={submitting || loadingProducts || products.length === 0}>{submitting ? 'Registrando…' : 'Registrar entrada'}</button><Link className="inventory-back" href="/inventory/orders">Ver historial</Link></div></form></section></InventoryShell>;

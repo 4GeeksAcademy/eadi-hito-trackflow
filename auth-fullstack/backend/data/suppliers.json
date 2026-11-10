@@ -12,7 +12,7 @@
       "service_zone": "West Coast",
       "contact_email": "business@ups.com",
       "notes": "Carrier principal para entregas locales en Los Ángeles y alrededores.",
-      "updated_at": "2026-09-11T23:03:15.700188+00:00"
+      "updated_at": "2026-11-10T17:15:01.273756+00:00"
     },
     "2": {
       "name": "FedEx Ground",
@@ -197,20 +197,6 @@
       "contact_email": "enterprise@sap.com",
       "notes": "Suspendido. Andrés está evaluando alternativas más ligeras para el almacén de LA.",
       "updated_at": "2026-09-11T23:03:15.781861+00:00"
-    },
-    "15": {
-      "name": "ReturnBear",
-      "country": "USA",
-      "categories": [
-        "reverse_logistics"
-      ],
-      "rate_per_shipment": 4.15,
-      "currency": "USD",
-      "status": "active",
-      "service_zone": "West Coast",
-      "contact_email": "partnerships@returnbear.com",
-      "notes": "Gestión de devoluciones para clientes de Los Ángeles.",
-      "updated_at": "2026-09-11T23:03:15.789921+00:00"
     },
     "16": {
       "name": "Facu",
@@ -642,12 +628,12 @@
       "title": "Parcel delayed for five days with no update",
       "description": "Parcel delayed for five days with no update",
       "category": "carrier_issue",
-      "status": "open",
+      "status": "resolved",
       "origin": "customer",
       "branch": "la_office",
       "source_id": "TRF-000003",
       "created_at": "2024-01-27T00:00:00+00:00",
-      "updated_at": "2024-01-27T00:00:00+00:00"
+      "updated_at": "2026-11-10T15:15:37.263606+00:00"
     },
     "4": {
       "title": "Package held at sorting facility for unknown reason",
@@ -697,12 +683,12 @@
       "title": "Customer reports delivery window passed with no contact",
       "description": "Customer reports delivery window passed with no contact",
       "category": "carrier_issue",
-      "status": "open",
+      "status": "discarded",
       "origin": "customer",
       "branch": "zaragoza_office",
       "source_id": "TRF-000008",
       "created_at": "2024-01-24T00:00:00+00:00",
-      "updated_at": "2024-01-24T00:00:00+00:00"
+      "updated_at": "2026-11-10T15:15:46.003581+00:00"
     },
     "9": {
       "title": "Delivery attempted at old address not updated in system",
@@ -1714,6 +1700,26 @@
       "branch": "la_warehouse",
       "created_at": "2026-11-09T20:50:05.449122+00:00",
       "updated_at": "2026-11-09T20:50:22.375841+00:00"
+    },
+    "101": {
+      "title": "Poco stock",
+      "description": ".",
+      "category": "other",
+      "status": "in_progress",
+      "origin": "internal",
+      "branch": "la_office",
+      "created_at": "2026-11-10T15:23:30.090053+00:00",
+      "updated_at": "2026-11-10T15:23:47.302281+00:00"
+    },
+    "102": {
+      "title": "Bajo stock en Zaragoza",
+      "description": "Bajo stock de:\n-\n-\n-\n",
+      "category": "other",
+      "status": "resolved",
+      "origin": "branch",
+      "branch": "zaragoza_warehouse",
+      "created_at": "2026-11-10T15:38:36.620757+00:00",
+      "updated_at": "2026-11-10T15:38:53.525085+00:00"
     }
   }
 }

@@ -17,8 +17,8 @@ export function getRecord(id: string): Candidate | undefined {
   return candidate ? cloneCandidate(candidate) : undefined;
 }
 
-export function createRecord(payload: CandidateFormValues): Candidate {
-  const candidate: Candidate = { id: `cand-${Date.now()}`, ...payload, notes: [] };
+export function createRecord(payload: CandidateFormValues, id = `cand-${Date.now()}`, cvFileName?: string): Candidate {
+  const candidate: Candidate = { id, ...payload, ...(cvFileName ? { cvFileName } : {}), notes: [] };
   records = [candidate, ...records];
   return cloneCandidate(candidate);
 }

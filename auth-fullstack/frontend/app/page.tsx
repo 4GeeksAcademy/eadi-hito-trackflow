@@ -4,10 +4,12 @@ import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ThemeToggle from '../components/ThemeToggle';
+import LanguageSwitch from '../components/LanguageSwitch';
+import CandidateApplicationForm from '../components/CandidateApplicationForm';
 
 const services = [
   { number: '01', title: 'Gestión de almacenes', copy: 'Inventario visible y operaciones coordinadas desde Los Ángeles y Zaragoza.', items: ['Almacenamiento, picking y packing', 'Inventario en tiempo real', 'Alertas de stock bajo'] },
-  { number: '02', title: 'Última milla', copy: 'La red de transportistas y el seguimiento que convierten la promesa en entrega.', items: ['Red de 8 carriers', 'Tracking unificado', 'Gestión de incidencias'] },
+  { number: '02', title: 'Última milla', copy: 'La red de transportistas y el seguimiento que convierten la promesa en entrega.', items: ['Red de 8 transportistas', 'Seguimiento unificado', 'Gestión de incidencias'] },
   { number: '03', title: 'Logística inversa', copy: 'Devoluciones más rápidas, consistentes y conectadas con tu plataforma.', items: ['Aprobación y recogida', 'Inspección y reacondicionamiento', 'Análisis de patrones'] }
 ];
 
@@ -69,16 +71,16 @@ export default function HomePage() {
     <header className="site-header">
       <nav className="container site-nav" aria-label="Navegación principal">
         <a href="#inicio" className="brand-lockup" aria-label="TrackFlow, inicio"><Image src="/trackflow-logo.png" alt="" width={40} height={36} className="brand-mark brand-mark-light" /><Image src="/trackflow-logo.png" alt="" width={40} height={36} className="brand-mark brand-mark-dark" /><span className="brand-wordmark">Track<span>Flow</span></span></a>
-        <div className="site-nav-links"><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><Link className="nav-link" href="/login">Acceder</Link><ThemeToggle /><a className="button button-primary" href="#contacto">Solicitar información</a></div>
+        <div className="site-nav-links"><a className="nav-link" href="#servicios">Servicios</a><a className="nav-link" href="#cobertura">Cobertura</a><a className="nav-link" href="#careers">Trabaja con nosotros</a><Link className="nav-link" href="/login">Acceder</Link><LanguageSwitch /><ThemeToggle /><a className="button button-primary" href="#contacto">Solicitar información</a></div>
       </nav>
     </header>
     <section className="container hero-grid" id="inicio">
-      <div><div className="eyebrow">TrackFlow Tech · desde 2009</div><h1 className="hero-title">Logística que escala con tu e-commerce.</h1><p className="hero-copy">Gestión de almacenes, entregas de última milla y logística inversa en Estados Unidos y España. Tú haces crecer la marca; nosotros movemos lo que la hace posible.</p><a className="button button-light" href="#contacto" style={{ marginTop: 28 }}>Hablemos de tu operación <span aria-hidden="true" style={{ marginLeft: 12 }}>↗</span></a></div>
+      <div><div className="eyebrow">TrackFlow Tech · desde 2009</div><h1 className="hero-title">Logística que escala con tu comercio electrónico.</h1><p className="hero-copy">Gestión de almacenes, entregas de última milla y logística inversa en Estados Unidos y España. Tú haces crecer la marca; nosotros movemos lo que la hace posible.</p><a className="button button-light" href="#contacto" style={{ marginTop: 28 }}>Hablemos de tu operación <span aria-hidden="true" style={{ marginLeft: 12 }}>↗</span></a> <a className="button button-primary" href="#careers" style={{ marginTop: 28 }}>Trabaja con nosotros</a></div>
       <div className="hero-art"><Image src="/landingpage.jpg" alt="Centro de distribución de TrackFlow con camiones de reparto" fill sizes="(max-width: 800px) 100vw, 45vw" className="hero-photo" priority /></div>
     </section>
-    <section className="section container" id="servicios"><div className="section-heading"><div><div className="eyebrow">Una operación, una visión</div><h2>Todo lo que pasa después del click.</h2></div><p>Conectamos inventario, personas y transportistas para que cada pedido avance con menos fricción.</p></div><div className="service-grid">{services.map((service) => <article className="service-card" key={service.number}><div className="service-number">{service.number}</div><h3>{service.title}</h3><p>{service.copy}</p><ul>{service.items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div></section>
+    <section className="section container" id="servicios"><div className="section-heading"><div><div className="eyebrow">Una operación, una visión</div><h2>Todo lo que pasa después del clic.</h2></div><p>Conectamos inventario, personas y transportistas para que cada pedido avance con menos fricción.</p></div><div className="service-grid">{services.map((service) => <article className="service-card" key={service.number}><div className="service-number">{service.number}</div><h3>{service.title}</h3><p>{service.copy}</p><ul>{service.items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div></section>
     <section className="section coverage-band" id="cobertura"><div className="container"><div className="section-heading"><div><div className="eyebrow" style={{ color: 'var(--lime)' }}>Dos países. Una operación.</div><h2>Visibilidad donde tu cliente la necesita.</h2></div><p style={{ color: '#bfd0c6' }}>Una infraestructura binacional preparada para crecer con tus mercados.</p></div><div className="coverage-grid"><article className="coverage-card"><Image src="/coverage-us.png" alt="" fill sizes="(max-width: 560px) 100vw, 50vw" className="coverage-image" /><h3>Estados Unidos</h3><p>Almacén en Los Ángeles<br />Cobertura nacional<br />UPS · FedEx · DHL</p></article><article className="coverage-card"><Image src="/coverage-spain.png" alt="" fill sizes="(max-width: 560px) 100vw, 50vw" className="coverage-image" /><h3>España</h3><p>Almacén en Zaragoza<br />Cobertura peninsular e islas<br />MRW · SEUR · DHL</p></article></div></div></section>
-    <section className="section container"><div className="eyebrow">Por qué TrackFlow</div><div className="benefit-grid" style={{ marginTop: 32 }}><div className="benefit"><strong>Operación binacional</strong><span>Infraestructura propia en Estados Unidos y España.</span></div><div className="benefit"><strong>+130 profesionales</strong><span>Equipos que conocen tu operación de principio a fin.</span></div><div className="benefit"><strong>Tecnología propia</strong><span>Datos de inventario y entregas en una sola mirada.</span></div><div className="benefit"><strong>E-commerce nativo</strong><span>Moda, electrónica y cosmética son nuestro terreno.</span></div></div></section>
+    <section className="section container"><div className="eyebrow">Por qué TrackFlow</div><div className="benefit-grid" style={{ marginTop: 32 }}><div className="benefit"><strong>Operación binacional</strong><span>Infraestructura propia en Estados Unidos y España.</span></div><div className="benefit"><strong>+130 profesionales</strong><span>Equipos que conocen tu operación de principio a fin.</span></div><div className="benefit"><strong>Tecnología propia</strong><span>Datos de inventario y entregas en una sola mirada.</span></div><div className="benefit"><strong>Especialistas en comercio electrónico</strong><span>Moda, electrónica y cosmética son nuestro terreno.</span></div></div></section>
     <section className="section container" id="contacto">
       <div className="contact-panel">
         <div>
@@ -114,6 +116,7 @@ export default function HomePage() {
         </form>}
       </div>
     </section>
+    <section className="section container" id="careers"><div className="contact-panel"><div><div className="eyebrow">Equipo TrackFlow</div><h2 style={{ fontSize: 'clamp(2.3rem, 5vw, 4rem)', lineHeight: 1, margin: '14px 0 20px' }}>Trabaja con nosotros.</h2><p style={{ color: 'var(--muted)', lineHeight: 1.6 }}>Cuéntanos sobre tu experiencia y adjunta tu CV. El equipo de RRHH revisará tu candidatura.</p></div><CandidateApplicationForm /></div></section>
     <footer className="site-footer"><div className="container footer-row"><span>© 2025 TrackFlow. Todos los derechos reservados.</span><span style={{ display: 'flex', gap: 18 }}><Link href="/login">Acceder</Link></span></div></footer>
   </main>;
 }

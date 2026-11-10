@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import InventoryShell from '../InventoryShell';
+import { useLocale } from '../../../components/LocaleProvider';
 import { deleteInventoryOrder, getInventoryOrders, InventoryOrder } from '../../../lib/inventory';
 
 export default function InventoryOrdersPage() {
+  const locale = useLocale();
   const [orders, setOrders] = useState<InventoryOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -30,7 +32,10 @@ export default function InventoryOrdersPage() {
   useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
 
   async function removeOrder(order: InventoryOrder) {
-    if (!window.confirm(`¿Eliminar ${order.type === 'inbound' ? 'la entrada' : 'la salida'} de ${order.quantity} unidades de ${order.sku}? Se recalculará el stock.`)) return;
+    const prompt = locale === 'en'
+      ? `Delete ${order.type === 'inbound' ? 'inbound' : 'outbound'} order for ${order.quantity} units of ${order.sku}? Stock will be recalculated.`
+      : `¿Eliminar ${order.type === 'inbound' ? 'la entrada' : 'la salida'} de ${order.quantity} unidades de ${order.sku}? Se recalculará el stock.`;
+    if (!window.confirm(prompt)) return;
     setDeleting(`${order.type}-${order.id}`);
     setActionError(''); setMessage('');
     try {
@@ -40,6 +45,18 @@ export default function InventoryOrdersPage() {
     } catch (deleteError) {
       setActionError(deleteError instanceof Error ? deleteError.message : 'No se pudo eliminar el movimiento.');
     } finally { setDeleting(null); }
+  }
+
+  if (locale === 'en') {
+    return <InventoryShell>
+      <header className="topbar"><div><div className="eyebrow">Inventory · Audit</div><h1>Order history</h1><p className="inventory-intro">Recorded inbound and outbound movements</p></div><div className="inventory-header-actions"><button className="inventory-refresh" type="button" onClick={() => void load()} disabled={loading || deleting !== null}>{loading ? 'Refreshing…' : '↻ Refresh'}</button></div></header>
+      {actionError && <p className="inventory-error" role="alert">{actionError}</p>}{message && <p className="inventory-success" role="status">Movement deleted. Stock has been recalculated.</p>}
+      <section className="inventory-table-panel" aria-labelledby="orders-heading"><div className="inventory-toolbar"><div><p className="eyebrow">Movement log</p><h2 id="orders-heading">Stock movements</h2></div></div>
+        {error && <div className="inventory-error" role="alert"><span>{error}</span><button type="button" onClick={() => void load()}>Retry</button></div>}
+        {loading ? <p className="inventory-state" role="status">Loading history…</p> : !error && orders.length === 0 ? <p className="inventory-state">No movements recorded.</p> : !error && <div className="inventory-table-wrap"><table className="inventory-table inventory-full-table"><caption className="visually-hidden">Inbound and outbound orders, stock, references, and actions</caption><thead><tr><th>Date</th><th>Type</th><th>Product / SKU</th><th>Client</th><th>Quantity</th><th>Warehouse</th><th>Reference / tracking</th><th>Actions</th></tr></thead><tbody>{orders.map((order) => { const inbound = order.type === 'inbound'; const key = `${order.type}-${order.id}`; return <tr key={key}><td>{new Date(order.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</td><td><span className={`status ${inbound ? 'ok' : 'warn'}`}>{inbound ? 'Inbound' : order.exit_type === 'loss' ? 'Outbound · loss' : 'Outbound · dispatch'}</span></td><td><span className="sku">{order.sku}</span><br /><span className="warehouse">{order.name}</span></td><td>{order.client_name}</td><td>{inbound ? '+' : '−'}{order.quantity}</td><td>{order.warehouse}</td><td>{order.reference ?? order.tracking_number ?? '—'}</td><td><div className="inventory-order-actions"><button className="inventory-refresh" type="button" onClick={() => setSelectedOrder(order)} aria-haspopup="dialog">View details</button><button className="inventory-refresh" type="button" disabled={deleting !== null} onClick={() => void removeOrder(order)} aria-label={`Delete ${inbound ? 'inbound' : 'outbound'} order ${order.id} for ${order.sku}`}>{deleting === key ? 'Deleting…' : 'Delete'}</button></div></td></tr>; })}</tbody></table></div>}
+      </section>
+      <dialog ref={detailDialog} className="inventory-order-dialog" aria-labelledby="order-detail-title" onClose={() => setSelectedOrder(null)}><header className="inventory-order-dialog-header"><h2 id="order-detail-title">Movement details</h2><button className="inventory-refresh" type="button" onClick={() => detailDialog.current?.close()} aria-label="Close details" title="Close details">×</button></header>{selectedOrder && <dl className="inventory-order-detail"><dt>Movement</dt><dd>{selectedOrder.type === 'inbound' ? 'Inbound' : 'Outbound'} #{selectedOrder.id}</dd><dt>Product</dt><dd>{selectedOrder.name} · {selectedOrder.sku} (ID {selectedOrder.sku_id})</dd><dt>Client brand</dt><dd>{selectedOrder.client_name}</dd><dt>Units / warehouse</dt><dd>{selectedOrder.quantity} · {selectedOrder.warehouse}</dd><dt>Date</dt><dd>{new Date(selectedOrder.created_at).toLocaleString('en-US')}</dd><dt>Reference</dt><dd>{selectedOrder.reference ?? '—'}</dd><dt>Outbound type</dt><dd>{selectedOrder.type === 'inbound' ? 'Not applicable' : selectedOrder.exit_type === 'loss' ? 'Loss' : 'Dispatch'}</dd><dt>Tracking</dt><dd>{selectedOrder.tracking_number ?? '—'}</dd><dt>User (UUID)</dt><dd>{selectedOrder.user_uuid}</dd></dl>}</dialog>
+    </InventoryShell>;
   }
 
   return <InventoryShell>
