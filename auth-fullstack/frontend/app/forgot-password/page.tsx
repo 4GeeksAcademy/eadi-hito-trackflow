@@ -32,5 +32,25 @@ export default function ForgotPasswordPage() {
     }
   }
 
-  return <div className="page-shell login-shell"><SiteNavbar currentPage="login" /><main className="auth-page"><section className="auth-card"><p className="eyebrow">TrackFlow Ops</p><h1>{t('Recuperar contraseña')}</h1>{sent ? <><p role="status">{t('Si esa dirección está registrada, recibirás un enlace en breve.')}</p><Link href={localizedPath('/login', locale)}>{t('Volver a iniciar sesión')}</Link></> : <form onSubmit={submit}><label>{t('Email')}<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? t('Enviando…') : t('Enviar enlace')}</button></form>}</section></main></div>;
+  return (
+    <div className="page-shell login-shell">
+      <SiteNavbar currentPage="login" />
+      <main className="auth-page">
+        <section className="auth-card">
+          <p className="eyebrow">TrackFlow Ops</p>
+          <h1>{t('Recuperar contraseña')}</h1>
+          {sent ? (
+            <p role="status">{t('Si esa dirección está registrada, recibirás un enlace en breve.')}</p>
+          ) : (
+            <form onSubmit={submit}>
+              <label>{t('Email')}<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
+              {error && <p className="incident-error" role="alert">{error}</p>}
+              <button className="primary-button" type="submit" disabled={submitting}>{submitting ? t('Enviando…') : t('Enviar enlace')}</button>
+            </form>
+          )}
+          <Link href={localizedPath('/login', locale)}>{t('Volver a iniciar sesión')}</Link>
+        </section>
+      </main>
+    </div>
+  );
 }

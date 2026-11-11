@@ -53,12 +53,21 @@ html body .brand, html body .kpi-value, html body .upload-panel h2, html body .a
 .auth-card label { display: grid; gap: 7px; color: var(--muted); font-size: .82rem; font-weight: 700; }
 .auth-card input { padding: 11px 12px; border: 1px solid var(--line); background: #fbfdf9; color: var(--navy); font: inherit; }
 .auth-card a { color: var(--green); font-weight: 700; }
-.login-shell { display: flex; flex-direction: column; min-height: 100vh; }
-.login-shell .auth-page { flex: 1; min-height: 0; }
-.login-shell .auth-card a { color: #1767d7; }
+.login-shell { display: flex; flex-direction: column; min-height: 100vh; overflow-x: clip; overflow-y: auto; }
+.login-shell .auth-page { flex: 1; min-height: 0; padding: 24px; background: transparent; }
+.login-shell .auth-card { border-color: rgba(16, 43, 83, .14); background: white; box-shadow: 0 20px 50px rgba(16, 43, 83, .08); }
+.login-shell .auth-card .eyebrow { color: var(--coral); }
+.login-shell .auth-card h1 { color: var(--ink); }
+.login-shell .auth-card label { color: var(--muted); }
+.login-shell .auth-card input { border-color: #d5deeb; background: white; color: var(--ink); }
+.login-shell .auth-card a { color: var(--coral); }
+.login-shell .auth-card [role='status'] { padding: 16px; border-left: 3px solid var(--coral); background: #edf4ff; color: var(--ink); line-height: 1.55; }
+.login-shell .primary-button { background: var(--coral); }
+.login-shell .primary-button:hover:not(:disabled) { background: #0759ca; }
 html[data-theme='dark'] .login-shell .auth-card { border-color: #38577b; background: #102b53; }
 html[data-theme='dark'] .login-shell .auth-card input { border-color: #38577b; background: #0b1c34; color: #e7f0ff; }
 html[data-theme='dark'] .login-shell .auth-card a { color: #91baff; }
+html[data-theme='dark'] .login-shell .auth-card [role='status'] { border-left-color: #4d94f5; background: #0d2444; color: #e7f0ff; }
 html[data-theme='dark'] .login-shell .primary-button { background: #1767d7; color: white; }
 
 /* ===== WEBSITE LANDING PAGE STYLES ===== */

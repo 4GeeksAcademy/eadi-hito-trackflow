@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LanguageSwitch from '../../components/LanguageSwitch';
+import SiteNavbar from '../../components/SiteNavbar';
 import { useLocale } from '../../components/LocaleProvider';
 import { localizedPath, translate } from '../../lib/i18n';
 
@@ -45,5 +45,24 @@ export default function RegisterPage() {
     }
   }
 
-  return <main className="auth-page"><section className="auth-card"><div className="auth-language-switch"><LanguageSwitch /></div><p className="eyebrow">TrackFlow Ops</p><h1>{t('Crear cuenta')}</h1><form onSubmit={submit}><label>{t('Nombre')}<input required value={form.name} onChange={(event) => update('name', event.target.value)} /></label><label>{t('Email')}<input type="email" required value={form.email} onChange={(event) => update('email', event.target.value)} /></label><label>{t('Contraseña')}<input type="password" required minLength={8} value={form.password} onChange={(event) => update('password', event.target.value)} /></label><label>{t('Confirmar contraseña')}<input type="password" required minLength={8} value={form.confirmation} onChange={(event) => update('confirmation', event.target.value)} /></label>{error && <p className="incident-error" role="alert">{error}</p>}<button className="primary-button" type="submit" disabled={submitting}>{submitting ? t('Creando…') : t('Crear cuenta')}</button></form><Link href={localizedPath('/login', locale)}>{t('Ya tengo una cuenta')}</Link></section></main>;
+  return (
+    <div className="page-shell login-shell">
+      <SiteNavbar currentPage="login" />
+      <main className="auth-page">
+        <section className="auth-card">
+          <p className="eyebrow">TrackFlow Ops</p>
+          <h1>{t('Crear cuenta')}</h1>
+          <form onSubmit={submit}>
+            <div className="field"><label>{t('Nombre')}<input required value={form.name} onChange={(event) => update('name', event.target.value)} /></label></div>
+            <div className="field"><label>{t('Email')}<input type="email" required value={form.email} onChange={(event) => update('email', event.target.value)} /></label></div>
+            <div className="field"><label>{t('Contraseña')}<input type="password" required minLength={8} value={form.password} onChange={(event) => update('password', event.target.value)} /></label></div>
+            <div className="field"><label>{t('Confirmar contraseña')}<input type="password" required minLength={8} value={form.confirmation} onChange={(event) => update('confirmation', event.target.value)} /></label></div>
+            {error && <p className="incident-error" role="alert">{error}</p>}
+            <button className="primary-button" type="submit" disabled={submitting}>{submitting ? t('Creando…') : t('Crear cuenta')}</button>
+          </form>
+          <Link href={localizedPath('/login', locale)}>{t('Ya tengo una cuenta')}</Link>
+        </section>
+      </main>
+    </div>
+  );
 }
